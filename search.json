@@ -1,0 +1,887 @@
+[
+  {
+    "objectID": "teste_hipoteses.html",
+    "href": "teste_hipoteses.html",
+    "title": "Teste de Hipóteses",
+    "section": "",
+    "text": "Em construção\n\n\n\n Back to top",
+    "crumbs": [
+      "Autor",
+      "Experimentos e Testes Estatísticos",
+      "Testes Não-paramétricos"
+    ]
+  },
+  {
+    "objectID": "testes_estat.html",
+    "href": "testes_estat.html",
+    "title": "testes_estat",
+    "section": "",
+    "text": "Back to top",
+    "crumbs": [
+      "Autor",
+      "Experimentos e Testes Estatísticos",
+      "Testes Estatísticos Paramétricos"
+    ]
+  },
+  {
+    "objectID": "normalidade.html",
+    "href": "normalidade.html",
+    "title": "Normalidade dos Dados",
+    "section": "",
+    "text": "A distribuição mais amplamente utilizada é a distribuição normal de Gauss (gaussiana). Dado o Teorema do Limite Central, que estabelece que à medida que haja a realização de um experimento aleatório que gere dados aleatórios de uma variável, e que, aumentando o número de réplicas desse experimento e aumentando assim o número de amostras obtidas, a esperança de que um valor médio surja naturalmente como tempo, dado que será o valor médio dos pontos amostrados, gerando um curva simétrica com média igual à média populacional (\\(\\mu\\)) e desvio padrão populacional conhecido (\\(\\sigma²\\)). Representamos assim a distribuição normal por N(\\(\\mu\\), \\(\\sigma²\\)).\nA melhor forma de visualizar a distribuição normal é a construção de curvas gaussianas a partir de valores de N(\\(\\mu\\), \\(\\sigma²\\)) conhecidos. Vamos rever os principais conceitos gráficos com os scripts em R a seguir.",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#introdução",
+    "href": "normalidade.html#introdução",
+    "title": "Normalidade dos Dados",
+    "section": "",
+    "text": "A distribuição mais amplamente utilizada é a distribuição normal de Gauss (gaussiana). Dado o Teorema do Limite Central, que estabelece que à medida que haja a realização de um experimento aleatório que gere dados aleatórios de uma variável, e que, aumentando o número de réplicas desse experimento e aumentando assim o número de amostras obtidas, a esperança de que um valor médio surja naturalmente como tempo, dado que será o valor médio dos pontos amostrados, gerando um curva simétrica com média igual à média populacional (\\(\\mu\\)) e desvio padrão populacional conhecido (\\(\\sigma²\\)). Representamos assim a distribuição normal por N(\\(\\mu\\), \\(\\sigma²\\)).\nA melhor forma de visualizar a distribuição normal é a construção de curvas gaussianas a partir de valores de N(\\(\\mu\\), \\(\\sigma²\\)) conhecidos. Vamos rever os principais conceitos gráficos com os scripts em R a seguir.",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#elaborando-curvas-normais-com-r",
+    "href": "normalidade.html#elaborando-curvas-normais-com-r",
+    "title": "Normalidade dos Dados",
+    "section": "Elaborando curvas normais com R",
+    "text": "Elaborando curvas normais com R\nNas análises estatísticas de dados normais, é comum gerar os histogramas para os dados e se determinar a área relativa abaixo da curva para um dado valor Z conhecido (vide curva normal padrão). Para tanto, basta conhecer o valor Z (Score Z) ou o valor da grandeza em análise e transformá-la no Score Z correspondente pela equação: \\[\nZ = \\dfrac{\\ \\bar{x} - \\mu}{s}\n\\] onde: \\[\n\\ \\bar{x} : é \\ o \\ valor \\ médio \\ amostral \\ da \\ variável\\ de \\ interesse.\n\\] \\[\n\\ \\mu : é \\ a \\ média \\ populacional\n\\] \\[\n\\ s: é \\ o \\ desvio-padrão\\ amostral.\n\\]\nVejamos como gerar alguns tipos de curvas normais a seguir.",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#ex.1---área-superior",
+    "href": "normalidade.html#ex.1---área-superior",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.1 - Área superior",
+    "text": "Ex.1 - Área superior\nImagine que vocẽ queira gerar uma curva normal representativa de um deslocamento de um veículo que tenha média de velocidade igual a 60 Km/h e desvio-padrão de 20 km/h. Deseja-se marcar no histograma a área relativa às velocidades superiores a duas vezes o desvio-padrão, ou seja, 2 x 20 = 40 km/h acima da média de velocidade. Assim, deve ser marcada a área acima de 100km/h.\nHá duas maneiras de se fazer isso:\n\ngerar os dados de forma aleatória (o que aqui foi feito).\nColetar daddos reais e plotar.\n\nPara gerar os dados aleatórios, faz-se os seguintes passos:\n\nCriar uma sequência de pontos aleatórios em “steps” definidos, ou seja, a grandeza de diferenciação dos valores aleatórios. Armazenar em um vetor.\nCriar a distribuição normal da variável criada no passo anterior, definindo uma média e um desvio-padrão. Armazenar em um vetor.\nDefinir uma área de interesse para hachurar e gerar coordenadas em X e em Y para delimitar a área a hachurar.\nPlotar a curva e o polígono definido anteriormente.\nAdicioanr informações e linhas de interesse no histograma, como média, e outras formatações etéticas no gráfico.\n\nSegue um exemplo ilustrativo:\n\nx&lt;-seq(-30, 150, by =.01)\ny&lt;-dnorm(x, mean=60, sd=20, log = FALSE)\nrx&lt;-seq(100, 150, by =.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=60, sd=20, log=FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Velocidade (km/h)', ylab='fdp(x)', main=\"Distribuição Normal - Velocidade\")\npolygon(rx, ry, col = \"gray\")\nabline(v=60, h=0, lty=3)",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#ex.2---área-intermediária",
+    "href": "normalidade.html#ex.2---área-intermediária",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.2 - Área intermediária",
+    "text": "Ex.2 - Área intermediária\nNeste exemplo, deseja-se hachurar a área compreendida entre os quartis Q1 e Q3, para o exemplo anterior. Assim, sabendo que os quartis são inicialmente desconhecidos, devemos encontrálos através de comandos tipo “qnorm” no R. Os quantis seriam aqueles percentis que separam os 25% menores valores e os 75% maiores valores, estando entre eles 50% dos dados. Assim:\n\nQ1&lt;- qnorm(0.25, mean=60, sd=20) \nQ1\n\n[1] 46.5102\n\nQ3&lt;- qnorm(0.75, mean=60, sd=20)\nQ3\n\n[1] 73.4898\n\n\n\nx&lt;-seq(-30, 150, by = .01)\ny&lt;-dnorm(x, mean=60, sd=20, log = FALSE)\n\nrx&lt;-seq(Q1, Q3, by=.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=60, sd=20, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Velocidade (Km/h)', ylab='fdp(x)',\n     main = \"Distribuição Normal - Velocidade\")\npolygon(rx, ry, col = 'blue')\nabline(v=60, h=0, lty=3)\n\n\n\n\n\n\n\n\n\nAlternativa - sem escala Z\nHachurar a área superior onde se encontra o percentil sobre o qual está abaixo dele 99,73% dos dados.\nAssim:\n\np3sigma&lt;- qnorm(0.9973, mean=0, sd=1)\np3sigma\n\n[1] 2.78215\n\n\n\nx&lt;-seq(-4, 4, by =.01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nrx&lt;-seq(p3sigma, 4, by =.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Z', ylab='fdp', xaxt=\"n\", main=\"Distribuição Normal - Velocidade\")\naxis(1,at=p3sigma,labels=\"2.78\")\npolygon(rx, ry, col = \"red\")\nabline(v=0, h=0, lty=3)\ntext(3,0.1,\"0,27%\")\narrows(2.82,0.01,2.85,0.08,length = 0.1)\ntext(0, -0.005, 0)",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#ex.3-área-inferior-com-z-score-conhecido",
+    "href": "normalidade.html#ex.3-área-inferior-com-z-score-conhecido",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.3-Área Inferior com Z Score conhecido",
+    "text": "Ex.3-Área Inferior com Z Score conhecido\nHachurar a área que se encontra abaixo de -1 sigma de variação sobre a média, ou seja, \\(\\mu -1\\sigma\\) de variação.\n\nz &lt;- seq(-3,3,0.01)\npd &lt;- dnorm(z)\nplot(z,pd,type=\"l\", main=\"Distribuição Normal\")\npolygon(c(z[z&lt;=-1],-1),c(pd[z&lt;=-1],pd[z==-3]),col=\"green\")\nabline(v=0, h=0, lty=2)",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#ex.4---área-inferior---escala-x",
+    "href": "normalidade.html#ex.4---área-inferior---escala-x",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.4 - Área inferior - escala x",
+    "text": "Ex.4 - Área inferior - escala x\nHachurar área inferior que delimite a área contida entre -3 e -1,25 sigmas de variação. Neste exemplo foram criados valores específicos para serem mostrados no eixo x, relativos a pesos de produtos embalados (gramas) com média e desvio-padrões como se segue:\n\npesos&lt;-c(146,154,162,170,178,186,192)\nsummary(pesos)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n  146.0   158.0   170.0   169.7   182.0   192.0 \n\nsd(pesos)\n\n[1] 16.82968\n\n\n\nx &lt;- seq(-3,3,0.01)\nz &lt;- seq(-3,-1.25,0.01)\np &lt;- dnorm(z)\nz &lt;- c(z,-1.25,-3)\np &lt;- c(p,min(p),min(p))\nplot(x,dnorm(x),type=\"l\",xaxt=\"n\",ylab=\"probability density\",xlab=\"pesos (g)\",\n     main=\"Distribuição de Pesos do Produto\")\naxis(1,at=-3:3,labels=c(\"146\",\"154\",\"162\",\"170\",\"178\",\"186\",\"192\"))\npolygon(z,p,col=\"purple\")\nabline(h=0, lty=3)\ntext(-1.25,0.2,\"161,75g\")\n\n\n\n\n\n\n\n\nO valor equivalente a -1,25 sigmas pode ser determinado por:\n\\[ Z = \\frac{\\bar{x} - \\mu}{\\frac{\\sigma}{\\sqrt n}}\\] \\[ -1,25 = \\frac{\\bar{x} - 169,7}{\\frac{16,82968}{\\sqrt 7}}\\] Assim, o valor de \\(\\bar{x}\\) é de:\n\nx &lt;- ((-1.25)*16.82968/sqrt(7))+169.7\nx\n\n[1] 161.7487",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#ex.5---área-superior---escala-x",
+    "href": "normalidade.html#ex.5---área-superior---escala-x",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.5 - Área superior - escala x",
+    "text": "Ex.5 - Área superior - escala x\nSimilar ao anterior, agora definindo área superior, entre 1,875 e 3 sigmas.\n\nz &lt;- seq(1.875,3,0.01)\np &lt;- dnorm(z)\nz &lt;- c(z,3,1.875)\np &lt;- c(p,min(p),min(p))\nplot(x,dnorm(x),type=\"l\",xaxt=\"n\",ylab=\"probability density\",xlab=\"Peso (gramas)\", main=\"Distribuição de Pesos do Produto\")\naxis(1,at=-3:3,labels=c(\"146\",\"154\",\"162\",\"170\",\"178\",\"186\",\"192\"))\npolygon(z,p,col=\"red\")\nabline(h=0, lty=3)",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#ex.6---área-intermediária---escala-x",
+    "href": "normalidade.html#ex.6---área-intermediária---escala-x",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.6 - Área intermediária - escala x",
+    "text": "Ex.6 - Área intermediária - escala x\nSimilar aos anteriores 4 e 5, mas com área delimitada entre -0.635 e 1.25 sigmas.\n\nz &lt;- seq(-0.635,1.25,0.01)\np &lt;- dnorm(z)\nz &lt;- c(z,1.25,-0.635)\np &lt;- c(p,0,0)\nplot(x,dnorm(x),type=\"l\",xaxt=\"n\",ylab=\"probability density\",xlab=\"Peso (g)\", main=\"Distribuição de Pesos do Produto\")\naxis(1,at=-3:3,labels=c(\"146\",\"154\",\"162\",\"170\",\"178\",\"186\",\"192\"))\npolygon(z,p,col=\"yellow\")\nabline(h=0, lty=6)",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#ex.7---quantil-conhecido",
+    "href": "normalidade.html#ex.7---quantil-conhecido",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.7 - Quantil conhecido",
+    "text": "Ex.7 - Quantil conhecido\nDesejando-se determinar o mesmo quantil para o percentil 5%, mas agora, bicaudal, deve-se proceder da seguinte forma: adiciona-se ao comando qnorm o termo “lower.tail = FALSE”. Isso determinará o ponto equivalente superior na curva normal padrão; Entretanto, deve-se corrigir agora o termo 0.05 na entrada do comando qnorm, já que uma área de 5% será distribuída em duas caudas. Assim deve-se entrar com a metade do valor, que é 2,5% (ou 0.025).\n\n# Determinar o quantil para uma área igual a 5% na curva normal, unicaudal inferior.\n\nq&lt;-qnorm(0.025, mean = 0, sd = 1, lower.tail = FALSE)\nq\n\n[1] 1.959964\n\n\nPor simetria da curva, sabemos que o quantil inferior equivalente à 2,5% será q=-1,959964 (sinal negativo no valor anterior). Com isso sabemos que a área procurada será igual a 2x qualquer lado determinado anteriormente (0.95 ou 95%).\n\nx&lt;-seq(-3, 3, by = .01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nqnorm(0.025,0,1) ; qnorm(0.975,0,1)\n\n[1] -1.959964\n\n\n[1] 1.959964\n\nrx&lt;-seq(-1.96, 1.96, by=.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Curva Normal Padrão', ylab='fdp(x)',\n     main = \"Curva Normal Padrão\", col=\"black\")\npolygon(rx, ry, col = 'blue')\nabline(v=0, h=0, lty=3)\ntext(-2.5,0.1,\"2,5%\")\ntext(2.5,0.1,\"2,5%\")\ntext(0,0.12,\"95%\", col=\"white\")\nmtext(\"Área nas caudas: 5%\", adj = 0.5)\n\n\n\n\n\n\n\n\n\nqnorm(0.025,0,1) ; qnorm(0.975,0,1)\n\n[1] -1.959964\n\n\n[1] 1.959964",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#ex.8-percentil-para-q0",
+    "href": "normalidade.html#ex.8-percentil-para-q0",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.8-Percentil para q=0",
+    "text": "Ex.8-Percentil para q=0\nPara q=0, que é a posição central da curva normal, devemos encontrar uma área de 50% abaixo deste quantil (p=0.5). Confirmando:\n\npnorm(0, mean=0, sd=1)\n\n[1] 0.5\n\n\nSe desejamos encontrar a área (ou percentil) associado à posição Z=1,96, tem-se:\n\npnorm(1.96, mean=0, sd=1)\n\n[1] 0.9750021\n\n\n\n\n\n\n\n\nNote\n\n\n\nNote que o valor encontrado 0.975 equivale a uma área de 97,5% abaixo do quantil z=1,96.\n\n\n\nx&lt;-seq(-4, 4, by =.01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nrx&lt;-seq(1.975, 4, by =.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='', ylab='', xaxt=\"n\", main=\"Distribuição Normal - unicaudal superior\")\naxis(1,at=1.975,labels=\"1,975\")\npolygon(rx, ry, col = \"blue\")\nabline(h=0, lty=1)\ntext(3,0.1,\"2,5%\")\ntext(0,0.12,\"95%\", col=\"red\")\narrows(2.5,0.01,2.8,0.08,length = 0.1)\n\n\n\n\n\n\n\n\nNo caso contrário, ou seja, quando se deseja obter uma área superior à um determinado quantil conhecido, adiciona-se o termo “lower.tail=FALSE”.",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#ex.9---cauda-superior-com-q-conhecido",
+    "href": "normalidade.html#ex.9---cauda-superior-com-q-conhecido",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.9 - Cauda superior com q conhecido",
+    "text": "Ex.9 - Cauda superior com q conhecido\nVejamos o caso de um quantil conhecido q=1.5, onde se deseja conhecer a área (valor-p) acima deste valor:\n\narea&lt;-pnorm(1.5, mean=0, sd=1, lower.tail=FALSE)\narea\n\n[1] 0.0668072\n\nx&lt;-seq(-4, 4, by =.01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nrx&lt;-seq(1.5, 4, by =.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='', ylab='', xaxt=\"n\", main=\"Distribuição Normal -p-valor &gt; q= 1.5\")\naxis(1,at=1.5,labels=\"1,5\")\npolygon(rx, ry, col = \"blue\")\nabline(v=0, h=0, lty=3)\ntext(1.85,0.025,\"6,68%\", col=\"white\")\ntext(0, 0.2, \"93,32%\", col=\"red\")",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#ex.10-área-intermediária-com-quantis-conhecidos",
+    "href": "normalidade.html#ex.10-área-intermediária-com-quantis-conhecidos",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.10-Área intermediária com quantis conhecidos",
+    "text": "Ex.10-Área intermediária com quantis conhecidos\nSupondo que fossem conhecidos dois quantis quaisquer, q1=-1,25 e q2=1,75. A área a ser conhecida pode ser calculada através dos seguintes passos:\n1- Determinar a área contida abaixo de q2.\n2- Determinar a área contida abaixo de q1.\n3 - Subtrair as áreas anteriores dos passos (1) - (2)\nAssim:\n\nareaq1&lt;-pnorm(1.75, mean=0, sd=1)\ncat(\"A Área 1 é igual a = \", areaq1)\n\nA Área 1 é igual a =  0.9599408\n\nareaq2&lt;-pnorm(-1.25, mean=0, sd=1)\ncat(\"A Área 2 é igual a = \", areaq2)\n\nA Área 2 é igual a =  0.1056498\n\nareafinal&lt;- areaq1-areaq2\ncat(\"A Área final é igual a = \", areafinal)\n\nA Área final é igual a =  0.8542911\n\n\n\nx&lt;-seq(-3, 3, by = .01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nqnorm(-1.25,0,1) ; qnorm(1.75,0,1)\n\nWarning in qnorm(-1.25, 0, 1): NaNs produzidos\n\n\n[1] NaN\n\n\nWarning in qnorm(1.75, 0, 1): NaNs produzidos\n\n\n[1] NaN\n\nrx&lt;-seq(-1.25, 1.75, by=.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Curva Normal Padrão', ylab='fdp(x)',\n     main = \"Curva Normal Padrão\", col=\"black\")\npolygon(rx, ry, col = 'blue')\nabline(v=0, h=0, lty=3)\ntext(0,0.12,round(areafinal,4), col=\"white\")\nmtext(\"Área nas caudas: 0,1457\", adj = 0.5)",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#aplicação---condutor-metálico",
+    "href": "normalidade.html#aplicação---condutor-metálico",
+    "title": "Normalidade dos Dados",
+    "section": "Aplicação - Condutor Metálico",
+    "text": "Aplicação - Condutor Metálico\nConsidere um condutor metálico de cobre submetido a testes de amperagem. Testes anteriores admitem média populacional normal igual a 10mA, com desvio-padrão de 2mA. Calcular: a) a probabilidade de um certo condutor metálico apresentar amperagem superior a 13mA. b) a probabilidade da amperagem estar entre 9 e 11mA. c) a corrente máxima que determina aprovação de 98% dos condutores produzidos.\nResolução:\n\nprimeiramente devemos encontrar o valor Z correspondente ap árâmetro a ser testado (13mA) contra a média populacional de 10mA. Para isso, aplcia-se a expressão de determinação do Z Score: \\[ Z = \\dfrac{\\ \\bar{x} - \\mu}{s} \\] \\[ Z = \\dfrac{\\ 13 - 10}{2} = 1,5 \\] Uma vez conhecido o valor Z, determina-se a área contida na curva normal abaixo de Z=1,5. Assim:\n\n\npnorm(1.5, mean=0, sd=1)\n\n[1] 0.9331928\n\n\nHá portanto 93,32% de probabilidade de se encontrar condutores metálicos co maperagem abaixo de 13mA. Graficamente, temos:\n\nz &lt;- seq(-3,3,0.01)\npd &lt;- dnorm(z)\nplot(z,pd,type=\"l\", ylab=\"probability density\", xlab=\"Z\", main=\"Condutor Metálico\")\npolygon(c(z[z&lt;=1.5],1.5),c(pd[z&lt;=1.5],pd[z==-3]),col=\"red\")\nabline(h=0, lty=1)\ntext(0,0.2,\"93,32%\", col=\"white\")\nmtext(\"Área nas caudas: 0,1457\", adj = 0.5)\n\n\n\n\n\n\n\n\n\nAgora precisamos determinar uma área intermediária, entre 9 e 11mA. Para iso, precisamos definir os dois quartis equivalentes a essa asmperagens.\n\nZ Score (9mA): \\[ \\ Z_9 = \\dfrac{\\ \\bar{x} - \\mu}{s} \\] \\[ Z_9 = \\dfrac{\\ 9 - 10}{2} = -0,5 \\]\nZ Score (11mA): \\[ \\ Z_{11} = \\dfrac{\\ \\bar{x} - \\mu}{s} \\] \\[ Z_{11} = \\dfrac{\\ 11 - 10}{2} = 0,5 \\]\nA área que está sendo procurada é:\n\nareaamp11&lt;-pnorm(0.5, mean=0, sd=1)\ncat(\"A Área abaixo de 11mA é igual a = \", areaamp11)\n\nA Área abaixo de 11mA é igual a =  0.6914625\n\nareaamp9&lt;-pnorm(-0.5, mean=0, sd=1)\ncat(\"A Área abaixo de 9mA  é igual a = \", areaamp9)\n\nA Área abaixo de 9mA  é igual a =  0.3085375\n\nareaampt&lt;- areaamp11-areaamp9\ncat(\"A Área  abaixo de 9mA é igual a = \", areaampt)\n\nA Área  abaixo de 9mA é igual a =  0.3829249\n\n\n\nx&lt;-seq(-3, 3, by = .01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nrx&lt;-seq(-0.5, 0.5, by=.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Z', ylab='fdp(x)',\n     main = \"Curva Normal Padrão\", col=\"black\")\npolygon(rx, ry, col = 'blue')\nabline(v=0, h=0, lty=3)\ntext(0,0.12,round(areaampt,4), col=\"white\")\nmtext(\"Área entre 9 e 11 mA: \",areaampt, adj = 0.4)\n\n\n\n\n\n\n\n\n\nPara se determinar o quantil que produz apenas 2% no máximo de condutores com excesso de amperagem, deve ser determinado o quantil (Z Score) equivalente a este valor de amperagem. Para tanto, devvemos determnar o Z que gera uma área na curva normal de 0.98. Assim:\n\n\nz98&lt;-qnorm(0.98, 0, 1)\nz98\n\n[1] 2.053749\n\n\nPortanto, falta determinar agora a amperagem que equivale ao quantil z= 2,053749.\nZ Score (11mA): \\[ \\ Z_{0.02} = \\dfrac{\\ \\bar{x} - \\mu}{s} \\] \\[ Z_{0.02} = \\dfrac{\\ x - 10}{2} = 2,053749 \\] Assim, determina-se o valor de x = 14.1 mA. Cerca de 2% dos condutores apresentarão amperagem acima de 14,1mA.\n\nx&lt;-seq(-3, 3, by =.01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nrx&lt;-seq(2.053749, 3, by =.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Amperagem (mA)', ylab='Amperagem(mA)', xaxt=\"n\",\n     main = \"Condutor Metálico\", col=\"black\")\naxis(1,at=2.053749,labels=\"14,1mA\")\naxis(1,at=0,labels=\"10mA\")\npolygon(rx, ry, col = \"blue\")\nabline(h=0, v=0, lty=3)\ntext(3,0.1,\"2,0%\")\ntext(0,0.12,\"98%\", col=\"red\")\narrows(2.5,0.01,2.8,0.08,length = 0.1)",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#boxplot",
+    "href": "normalidade.html#boxplot",
+    "title": "Normalidade dos Dados",
+    "section": "Boxplot",
+    "text": "Boxplot\nO boxplot é um recurso de visualização de dados muito interessante, dado o resumo de informações úteis que ele traz em uma única imagem gráfica. A figura a seguir demonstra as componentes de um boxplot.",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#fonte-verma-abhishek-ranga-virender-2020",
+    "href": "normalidade.html#fonte-verma-abhishek-ranga-virender-2020",
+    "title": "Normalidade dos Dados",
+    "section": "",
+    "text": "Fonte: Verma, Abhishek & Ranga, Virender (2020)\nNa caixa central do boxplot, está o IQR (distância interquartílica, definida pelo valor do terceiro quartil na sua parte superior, e pelo primeiro quartil na parte inferior), sendo traçado entre Q1 e Q3 a posição da mediana dos dados. À direita de Q3 é traçado uma linha (Whisker superior) que corresponde a soma de Q3 mais 1,5 vezes a distância interquartílica (IQR = Q3 - Q1). Abaixo é traçado outra linha correspondente a Q1 menos 1,5 vezes o IQR (Whisker inferior).\nOs pontos que ficarem além desses limites, são chamados de outliers, ou pontos extremos, geralmente associados a pontos que estão demonstrando efeito de causas especiais agindo sobre o processo, devendo ser avaliados e, se possível, tratados.\nA forma do boxplot é importante, pois indica possíveis desvios de normalidade dos dados, quando a mediana se desloca para uma das direções de Q1 ou Q3, e as linhas calculadas (Whiskers) aparentam alterações em seus comprimentos relativos. A imagem a seguir mostra esses efeitos:\n\nNo Painel A verifica-se o caso no qual não há assimetrias na curva gaussiana, e maediana está centrada no ponto médio de IQR.\nNo Painel B, verifica-se que a mediana deslocou-se para a direita, em direção à Q3, assim há uma assimetria da curva com concentração de pontos à direita da mediana.\nNo Painel C há uma assimetria com concentração de dados à esquerda da mediana, que se deslocou em direção à Q1.\nComo veremos à frente, à medida que haja assimetrias significativas na gaussiana, a condição de normalidade dos dados pode ser perdida, e portanto testes coplementares devem ser feitos para garantir que as estatísticas paramétricas possam ser executadas e tragam confiabilidade nas análises.\nVamos ver alguns exemplos.",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#ex.11---assimetria",
+    "href": "normalidade.html#ex.11---assimetria",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.11 - Assimetria",
+    "text": "Ex.11 - Assimetria\nConsidere o tempo médio de processamento de uma peça fundida (segundos) abaixo, determinando os quartis, média, mediana e se há presença de outliers.\nDados:\n\ntempo&lt;-c(44.0, 44.5, 44.5, 44.7, 44.8, 44.9, 44.9, 45.0, 45.0, 45.0, 45.0, 45.4, 45.6, 45.7, 45.8, 46.0, 46.2, 46.3, 47.5)\n\nUma análise estatística fornece os valores pedidos da mediana, média e quartis:\n\nsummary(tempo)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n  44.00   44.85   45.00   45.31   45.75   47.50 \n\nsd(tempo)\n\n[1] 0.813411\n\n\nPara a análise de presença de outliers, gera-se o boxplot:\n\nboxplot(tempo, main=\"Boxplot para Tempo de Solidificação\", ylab=\"Tempo (s)\")\n\n\n\n\n\n\n\n\nO boxplot acusou a presença de um outlier acima do Whisker superior (ponto 47,5, valor máximo dos dados, neste caso). A posição da mediana em direção à Q1 indica maior concentração de dados à esquerda, o que pode ser evidenciado pelo histograma a seguir:\n\nhist(tempo, main=\"Histograma para Tempo de Solidificação\", ylab=\"Tempo (s)\")\n\n\n\n\n\n\n\n\n** Demonstração dos cálculos dos Whiskers de Q1 e Q3:\n\nQ3&lt;-45.75\nQ1&lt;- 44.85\nIQR&lt;- Q3-Q1\nIQR\n\n[1] 0.9\n\nW1&lt;- Q1-1.5*IQR\nW1\n\n[1] 43.5\n\nW2&lt;- Q3+1.5*IQR\nW2\n\n[1] 47.1\n\n\nComo há um único valor dos dados que está acima de W2, ele é marcado como outlier. Abaixo de W1 não há pontos menores, pis o menor valor dos dados é 44 (W1=43.5).",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#stem-and-leaf",
+    "href": "normalidade.html#stem-and-leaf",
+    "title": "Normalidade dos Dados",
+    "section": "Stem-and-Leaf",
+    "text": "Stem-and-Leaf\nUma outra forma de visualização dos dados é o diagrama Stem-and-Leaf (Ramo e folhas). pode ser obtido por:\n\nstem(tempo, scale=1.5)\n\n\n  The decimal point is at the |\n\n  44 | 0\n  44 | 557899\n  45 | 00004\n  45 | 678\n  46 | 023\n  46 | \n  47 | \n  47 | 5\n\n\nO valor da escala de 1.5 é para variar de 0,5 entre escalas. A primeira linha (ramo) refere-se aos dados que possuem até 44.0 a 44,5 de valor, a segunda linha entre 44.5 e 45,0, e assim sucessivamente. Os números à direita dos ramos são as folhas (decimais dos números), assim, no primeiro ramao e folha aparece o número zero (44,0). Na segunda linha, para o ramo 44 aparecem os números 557899, referem-se respectivamente aos números 44.5, 44.5, 44.7, 44.8, 44.9 e 44.9. É um aforma de visualizar os dados como se fosse um histograma a partir do eixo y. Note que o último número é o 47.5 e ele apareceu no último ramo e folha 5, que é o outlier anteriormente indentificado no boxplot. Apesar de visualmente pouco atrativo, o Stem-and-Leaf é útil em campo de amostragem, precisando apenas um papel e caneta para criar uma visão da distribuição dos dados e se há tendência a presença de outliers ou assimetrias significativas.",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#histograma",
+    "href": "normalidade.html#histograma",
+    "title": "Normalidade dos Dados",
+    "section": "Histograma",
+    "text": "Histograma\nSão construídos para dados contínuos através da divisão de amplitude de dados e intervalos agrupados em classes. A seleção do número de classes deve ser razoável para poder demonstrar o agrupamento das observações em grupos suficentes para a visualização da variabilidade dos dados. Em geral, são elaboradas de 5 a 20 classes para uma visualização satisfatória dos dados. pode-se estimar o número de classes como sendo a raiz quadrada do tamanho da amostra.\nVejamos o exemplo a seguir.\n##Ex.12 - Histograma\nDados relativos à espessura de camada de um semi-condutor (em angstrons).\n\nlayer&lt;-c( 438, 450, 487, 451, 452, 441, 444, 461, 432, 471,\n          413, 450, 430, 437, 465, 444, 471, 453, 431, 458, \n          444, 450, 446, 444, 466, 458, 471, 452, 455, 445,\n          468, 459, 450, 453, 473, 454, 458, 438, 447, 463,\n          445, 466, 456, 434, 471, 437, 459, 445, 454, 423,\n          472, 470, 433, 454, 464, 443, 449, 435, 435, 451,\n          474, 457, 455, 448, 478, 465, 462, 454, 425, 440,\n          454, 441, 459, 435, 446, 435, 460, 428, 449, 442,\n          455, 450, 423, 432, 459, 444, 445, 454, 449, 441,\n          449, 445, 455, 441, 464, 457, 437, 434, 452, 439)\n\nPara gerar o histograma, basta dar o comando “hist” para o objeto dos dados criados (layer), definindo o número de classes desejadas (opcional, com breaks= nº de classes). O R automaticamente escolhe um número de classes default. Vejamos com 10 e 12 classes como ficaria:\n\npar(mfrow=c(1,2))\nhist(layer, breaks=10, main=\"Histograma - Layer\", xlab=\"10 Classes\")\nhist(layer, breaks=12, main=\"Histograma - Layer\", xlab=\"12 Classes\")\n\n\n\n\n\n\n\npar(mfrow=c(1,1))\n\nO número definido em “breaks” não necessariamente será igual ao número de colunas do histograma, por isso é acponselhável alterar alguns valores para breaks e verificar a melhor visualização dos dados. Veja que no gráfico para 12 classes, surgiram 14 colunas, sendo as extremas relativas a valores que no histograma de 10 classes estavam agrupadas nas barras extremas e não foram “destacadas” como no segundo histograma.\nÉ possível alterar também as cores e acionar linhas de suavização, como nos exemplos do “help” do RStudio (inclusive para distribuições como a Qui-quadrado, ou customizando o eixo x).",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#qqplot",
+    "href": "normalidade.html#qqplot",
+    "title": "Normalidade dos Dados",
+    "section": "QQplot",
+    "text": "QQplot\nUma outra maneira de se avaliar a normalidade dos dados é o uso dos gráficos Quantil-Quantil. Eles possuem graficamente a plotagem dos pontos em um plano cartesiano formado pelos eixos:\n- eixo y: quantis reais (dados amostrais).\n- eixo x: quantis teóricos (baseados na curva normal - gaussiana)\nAo plotar os dados, se os quantis reais forem os mesmo da curva normal, todos os pontos estarão sobre uma reta perfeita, o que seria equivalente à uma curva normal padrão perfeitamente simétrica. Esta reta é formada pela seguinte regra:\n\n\n\n\n\nÀ medida que os pontos se afastam da reta, entende-se que a assimetria dos dados está aumentando, quanto mais afastada em determinadas posições em relação à reta, mais assimétrica é a curva real. Nas caudas da dsitribuição podem aparecer fortes desvios em relação à reta, o que indicaria a presença de outliers. Desvos na região central do gráfico indicam maior concentração à esquerda ou à direita em relação à mediana, como vimos no boxplot. Idealmente, analisa-se tanto o boxplot quanto o QQplot, conjuntamente.\nPara ilustrar melhor o exposto acima, vejamos mais um exemplo.",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#ex.13---qqplot",
+    "href": "normalidade.html#ex.13---qqplot",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.13 - QQplot",
+    "text": "Ex.13 - QQplot\nConsidere os dados abaixo sobre o teor de ácido úrico no sangue de cavalos sadios (g/ml).\n\nacuric&lt;-c(12.7, 12.7, 12.8, 13.5, 13.6, 13.7, 13.9, 14.1, 14.5, 14.6)\namostra&lt;-seq(1:10)\namostra\n\n [1]  1  2  3  4  5  6  7  8  9 10\n\nf_i&lt;-(amostra-0.5)/20\nf_i\n\n [1] 0.025 0.075 0.125 0.175 0.225 0.275 0.325 0.375 0.425 0.475\n\nquantis&lt;-c(qnorm(f_i, mean=0, sd=1))\nquantis\n\n [1] -1.95996398 -1.43953147 -1.15034938 -0.93458929 -0.75541503 -0.59776013\n [7] -0.45376219 -0.31863936 -0.18911843 -0.06270678\n\nac_urico&lt;-data.frame(acuric, f_i, quantis)\nac_urico\n\n   acuric   f_i     quantis\n1    12.7 0.025 -1.95996398\n2    12.7 0.075 -1.43953147\n3    12.8 0.125 -1.15034938\n4    13.5 0.175 -0.93458929\n5    13.6 0.225 -0.75541503\n6    13.7 0.275 -0.59776013\n7    13.9 0.325 -0.45376219\n8    14.1 0.375 -0.31863936\n9    14.5 0.425 -0.18911843\n10   14.6 0.475 -0.06270678\n\n\nBasta agora associar os quantis reais da coluna “acuric” com a coluna quantis do data frame anterior, em relação à uma reta perfeita (basta associar dois pontos quaisquer em que os quantis reais e teóricos coincidam e termos a reta da normalidade perfeita).\nComo isso é muito trabalhoso para fazer manualmente, utiliza-se o comando “qqnorm” conjuntamente com o comando “qqline” do R, onde é feito todo esse passo a passo automaticamente.\n\nqqnorm(acuric); qqline(acuric)\n\n\n\n\n\n\n\n\nNo gráfico acima nota-se que nas caudas os pontos tendem a se distanciar mais do que no centro do gráfico. Isso indica um certo afastamento da normalidade, por isso, outros testes quantitativos devem ser feitos conjuntamente para sanar as dúvidas “do quanto distante da normalidade” os dados estão ou não. Um desses testes é o de “Shapiro.Wilk”.\nPara visualizar a assimetria presente realiza-se o boxplot e o histograma.\n\npar(mfrow=c(1,2))\nhist(acuric, breaks=10, main=\"Histograma - Ácido Úrico\", xlab=\"g/ml\")\nboxplot(acuric, breaks=12, main=\"Histograma - Ácido Úrico\", ylab=\"g/ml\")\n\n\n\n\n\n\n\npar(mfrow=c(1,1))\n\nNote que com poucos dados disponíveis, o histograma não é uma boa ferramenta de análise da normalidade isoladamente… o boxplot fornece, nesse exemplo, uma visão melhor da assimetria dada a posição da mediana se aproximando de Q3, e os whiskers de comprimento diferentes.\n\n\n\n\n\n\nImportant\n\n\n\nO tamanho da amostra influencia na qualidade da avaliação de suposição de normalidade. Devem ser evitadas amostras muito pequenas que tornam a avaliação de normalidade, nestas condições, não recomendável. Apesar de não haver um “número mágico” para isso, menos do que 8 não devem ser consideradas. Entre 20 e 30 dados geralmente já facilita o trabalho, mas pode ser necessário até mesmo mais do que isso, o que vai depender dos dados amostrados em cada caso.\n\n\nAlgumas vezes as análises do boxplot e do QQplot podem levar a interpretações conflitantes. vejam:\n\n\n\n\n\nAcima, o boxplot não contribui muito para a análise de assimetria, apesar da mediana estar ligeiramente deslocada para Q1, os whiskers possuem aproximadamente o mesmo comprimento, mas o QQplot acusa forte desvio, ambos acusam outliers. Já na figura abaixo, vemos o contrário, o boxplot acusa assimetria ais forte (dado os comprimentos dos whiskers mais distintos entre si), e o QQplot não demonstra tanta fuga da normalidade. Parte-se, complementarmente, para a análise quantitativa. Vejamos com o teste de Shapio Wilk auxilia.",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "normalidade.html#teste-de-shapiro.wilk",
+    "href": "normalidade.html#teste-de-shapiro.wilk",
+    "title": "Normalidade dos Dados",
+    "section": "Teste de Shapiro.Wilk",
+    "text": "Teste de Shapiro.Wilk\nVamos analisar o exemplo anterior com base no teste de Shapiro.Wilk, sendo realizado no R com o seguinte comando:\n\nshapiro.test(acuric)\n\n\n    Shapiro-Wilk normality test\n\ndata:  acuric\nW = 0.91581, p-value = 0.3233\n\n\nNeste teste, comparamos o p-valor (p-value) com um valor de referência. Por padrão, o R compara com o valor de 0.05 (nível de significãncia do teste, o que significaria um intervalo de confiança de 95%). Por enquanto, antes de apresentar o capítulo do teste de hipóteses, vamos coniserar a seguinte regra, a elucidar posteriormente:\n\nSe p-value &lt; 0.05, há evidências estatísticas para rejeitar a hipótese de normalidade dos dados.\nSe p-value &gt;= 0.05, não há evidências estatísticas para rejeitar a hipótese de normalidade dos dados.\n\nNo caso do ácido úrico, os dados podem ser considerados normais. Vejam, a importância do teste quantitativo, mas que não deve ser tomado isoladamente, pois a análise gráfica auxilia a visualizar quais dados estão afetando a normalidade dos dados.\n\n\n\n\n\n\nWarning\n\n\n\nHá vários outros testes de modelos probabilísticos alternativos ao gaussiano, como o modelo exponencial, modelo de Weilbull, modelo log-normal, etc… e ainda outras alternativas para métodos não-paramétricos, que não necessitam supor um modelo de normalidade da população de onde foram amostrados os dados.\n\n\nPara o teste de hipótse de normalidade, há outros testes estatísticos disponíveis, como os testes de Kolgomorov-Smirnov, e Anderson-Darling, que não serão abordados nesse estudo, dado que o teste de Shapiro-Wilk é robusto para as nossas abordagens.",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Normalidade dos Dados"
+    ]
+  },
+  {
+    "objectID": "intervalos.html",
+    "href": "intervalos.html",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "A inferência estatística consiste em fornecer aos analistas uma visão ou estimação de parãmetros para a tomada de decisão sobre uma determinada população. Essa estimação pode ser de dois tipos básicos:\n\nEstimativa pontual.\nEstimativa Intervalar.\n\nA estimativa pontual de parâmetros é aquela que nos fornece estatísticas sobre uma determinada variável de interesse de uma população, como média por exemplo, e fornece um valor que não aborda a incerteza de sua estimação. Quando o erro de estimação é considerado, assume-se então uma estimativa intervalar, ou seja:\nEstimativa Intervalar = Estimativa Pontual + Erro de Estimação\nVejamos um exemplo:\n\nVariável de interesse: condutividade tŕmica de um metal (em BTU/hr-ft-ºF).\nAmostragem de algumas resistências forneceram os seguintes valores:\n\n\ncondut&lt;-c(41.60, 41.48, 42.34, 41.95, 41.86,\n          42.18, 41.72, 42.26, 41.81, 42.04)\nmedia_condut&lt;-mean(condut)\ncat(\" A condutividade média do metal é de :\", media_condut, \"BTU/hr-ft-ºF\")\n\n A condutividade média do metal é de : 41.924 BTU/hr-ft-ºF\n\n\nA estimativa do desvio-padrão amostral é:\n\ns_condut&lt;-sd(condut)\ncat(\"O desvio-padrão da condutividade é igual a \", s_condut, \"BTU/hr-ft-ºF\")\n\nO desvio-padrão da condutividade é igual a  0.2841048 BTU/hr-ft-ºF\n\n\nAssim, o erro-padrão amostral estimado é igual a: \\[ Erro-padrão = \\frac{\\sigma}{\\sqrt n} \\]\n\nerro_pad&lt;- s_condut/sqrt(length(condut))\ncat(\"O erro-padrão amostral é igual a \", erro_pad, \"BTU/hr-ft-ºF\")\n\nO erro-padrão amostral é igual a  0.08984184 BTU/hr-ft-ºF\n\n\nÉ importante notar que o erro-padrão é apenas cerca de 0,2% da média de condutividade, podendo ser determinado por:\n\ncat(\"Percentual do erro-padrão = \",100*erro_pad/media_condut, \"%\")\n\nPercentual do erro-padrão =  0.2142969 %\n\n\nPara realizar a estimativa intervalar, é necessário recorrer ao teorema central do limite, pois a média é uma variável aleatória.\n\\[ Z = \\frac{\\bar{x} - \\mu}{erro-padrão} \\] Assim,\n\\[ Z = \\frac{\\bar{x} - \\mu}{\\frac{\\sigma}{\\sqrt n}}\\]\nA curva normal padrão fornece as áreas relativas a uma distribuição com média centrada em seu valor \\(\\mu\\) (média populacional) e desvio-padrão \\(\\sigma\\), tal que, para um intervalo de confiança de 95%, há um nível de significância de 5%, dividido em duas caudas com 2,5% cada uma. Assim, cahmamos a estimativa intervalar de “Intervalo de Confiança - IC”. Assim:\n\nx&lt;-seq(-3, 3, by = .01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nqnorm(0.025,0,1) ; qnorm(0.975,0,1)\n\n[1] -1.959964\n\n\n[1] 1.959964\n\nrx&lt;-seq(-1.96, 1.96, by=.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Curva Normal Padrão', ylab='fdp(x)',\n     main = \"Curva Normal Padrão\", col=\"black\")\npolygon(rx, ry, col = 'blue')\nabline(v=0, h=0, lty=3)\ntext(-2.5,0.1,\"2,5%\")\ntext(2.5,0.1,\"2,5%\")\ntext(0,0.12,\"95%\", col=\"white\")\nmtext(\"Área nas caudas: 5%\", adj = 0.5)\n\n\n\n\n\n\n\n\nOs valores Z que delimitam ambas as caudas podem ser encontrados pelo comando qnorm, tal que:\n\nCauda inferior:\n\n\nqnorm(0.025, mean=0, sd=1)\n\n[1] -1.959964\n\n\n\nCauda superior:\n\n\nqnorm(0.025, mean=0, sd=1, lower.tail = FALSE)\n\n[1] 1.959964\n\n\nA estimativa intervalar ou IC pode ser estimada em duas situações: - o desvio-padrão populacional \\(\\sigma\\) é conhecido. - o desvio-padrão populacional \\(\\sigma\\) é desconhecido.\nQuando \\(\\sigma\\) é conhecido, utiliza-se a distribuição normal Z para calcular o IC, tal que:\n\\[ IC^{95} = \\bar{x} \\pm Z_ \\frac{\\alpha}{2}.\\frac{\\sigma}{\\sqrt n}  \\]\nNo caso em que \\(\\sigma\\) é desconhecido, utiliza-se a distribuição t de student, tal que o IC é calculado por:\n\\[ IC^{95} = \\bar{x} \\pm t_ {(n-1);\\alpha/2}.\\frac{s}{\\sqrt n}\\] onde s é o desvio-padrão amostral e t(n-1);\\(\\alpha\\)/2 é o valor da distribuição de t de student para (n-1) graus de liberdade.\nAnalogamente ao que foi determinado para o valor de Z anteriormente, determinamos o valor de t de student da seguinte forma:\n\nt&lt;-qt(0.025, df=9, lower.tail = FALSE)\nt\n\n[1] 2.262157\n\n\nNo exemplo da condutividade metálica anterior, temos uma amostra de tamanho 10 (n=10) e portanto, utiliza-se a distribuição t para realizar o cálculo do IC (95%). Assim:\n\nn&lt;- length(condut)\nIC_inferior&lt;- mean(condut)-(t*erro_pad)\nIC_superior&lt;- mean(condut)+(t*erro_pad)\nIC_condut&lt;-c(IC_inferior, IC_superior)\nIC_condut\n\n[1] 41.72076 42.12724\n\n\nPortanto, a condutividade média do condutor metálico (com estimativa pontual de 41,924 BTU/hr-ft-ºF) está presente no IC de [41.72076; 42.12724] para um IC de 95%.\n\n\n\n\n\n\nNote\n\n\n\nQuando o tamanho da amostra “n” for maior do que 30 (amostras grandes), pode ser utilizado a distribuição normal em lugar da distribuição t. Em amostras com n igual ou menor que 30, recomenda-se a utilização da distribuição t de student, de forma a ter uma análise mais conservadora.\n\n\n\n\nPara evitar fazer as fórmulas de cálculo, podemo sutilizar alternativamente um comando rápido, o “t.test”, que roda o teste t de student conforme calculamos acima. Para a estimativa pontual, basta digitar:\n\nt.test(condut)$estimate   #Estimativa pontual\n\nmean of x \n   41.924 \n\n\nPara a estimativa intervalar, basta digitar:\n\nt.test(condut,conf.level=0.95)$conf.int  #Intervalo de Confiança\n\n[1] 41.72076 42.12724\nattr(,\"conf.level\")\n[1] 0.95\n\n\n\n\n\n\nboxplot(condut)\n\n\n\n\n\n\n\n\n\nqqnorm(condut); qqline(condut)\n\n\n\n\n\n\n\n\n\n\n\nTeste de Shapiro-Wilk\nH0: os dados vieram de uma distribuição que segue o modelo Normal\nHA: os dados não vieram de uma distribuição que segue o modelo Normal\n\nshapiro.test(condut)\n\n\n    Shapiro-Wilk normality test\n\ndata:  condut\nW = 0.97355, p-value = 0.9216\n\n\nCom base nos testes acima, não há evidências contra a suposição de normalidade dos dados, não rejeitando-se a Ho (valor-p igual a 0.9216&gt; nível de significância 0.05).\nExemplo 01\nOs dados a seguir são relativos à força (em libras) necessária para se extrair um conector usado em fabricação de motores. Pede-se:\nDados:\n\nf_extract&lt;-c(79.3, 75.1, 78.2, 74.1, 73.9, 75.0, 77.6, 77.3, 73.8, \n             74.6, 75.5, 74.0, 74.7, 75.9, 72.9, 73.8, 74.2, 78.1,\n             75.4, 76.3, 75.3, 76.2, 74.9, 78.0, 75.1, 76.8)\n\n\nDetermine a estimativa pontual da força de extração do conector.\n\n\nf_media&lt;-mean(f_extract)\ncat(\"A força de extração média do conector é de\",f_media, \"libras\")\n\nA força de extração média do conector é de 75.61538 libras\n\n\n\nDetermine o valor da força que separa os 50% maiores esforços dos outros 50% menores.\n\nO valor que separa 50% dos dados é a mediana. Assim:\n\nmediana&lt;-median(f_extract)\ncat(\" O valor que separa 50% dos dados à esquerda e à direita é:\", mediana, \"libras\")\n\n O valor que separa 50% dos dados à esquerda e à direita é: 75.2 libras\n\n\n\nDetermine as estimativas pontuais do desvio-padrão e variância dos dados de força de extração do conector.\n\n\nDesvio-padrão:\n\n\ndp_f&lt;-sd(f_extract)\ncat(\"O desvio-padrão da força de extração do conector é de\", dp_f, \"libras\")\n\nO desvio-padrão da força de extração do conector é de 1.654737 libras\n\n\n\nVariância:\n\n\nvariancia&lt;-var(f_extract)\ncat(\"A variância da força de extração do conector é de\", variancia, \"libras\")\n\nA variância da força de extração do conector é de 2.738154 libras\n\n\n\nDetermine a estimativa pontual do erro-padrão da força de extração do conector.\n\n\nErro-padrão:\n\n\nerro_pad&lt;- sd(f_extract)/sqrt(length(f_extract))\ncat(\"O erro-padrão amostral é igual a \", erro_pad, \"Libras\")\n\nO erro-padrão amostral é igual a  0.3245206 Libras\n\n\n\nDetermine uma estimativa pontual da proporção de conectores que limita a força em 73 libras.\n\nPara isso deve ser determinado o valor da estimativa do teste t, que fornecerá o valor para o qual se associa 73 libras na distribuição t.\nO teste t, define-se por:\n\\[ T = \\frac{\\bar{x} - \\mu}{\\frac{s}{\\sqrt n}}\\]\nAssim,\n\\[ T = \\frac{73 - 75,61}{\\frac{1,65}{\\sqrt 26}}= -2,61\\] Assim, o valor da proporção de conectores que não superam 73 libras de força é de:\n\np73&lt;-pt(-2.61, df=25)\ncat(\"Cerca de\", 100*p73, \"% dos conectores terão força de extração menor que 73 libras.\")\n\nCerca de 0.7538574 % dos conectores terão força de extração menor que 73 libras.\n\n\n\n# Determinar o quantil para uma área igual a 5% na curva normal, unicaudal inferior.\nq&lt;-qnorm(0.007539, mean = 0, sd = 1)\nz &lt;- seq(-3,3,0.01)\npd &lt;- dnorm(z)\nplot(z,pd,type=\"l\", main=\"Força de Extração &lt; 73 Libras\")\npolygon(c(z[z&lt;=q],q),c(pd[z&lt;=q],pd[z==-3]),col=\"red\")\nabline(v=60, h=0, lty=2)\ntext(-2.7,0.05,\"0,75%\")\nmtext(\"z=-2,61\")\n\n\n\n\n\n\n\n\nExemplo 02\nPara o exercício 01, faça uma estimativa intervalar da força de extração do conector, considerando um IC de 95%, das seguintes formas:\n\nAplique a fórmula de determinação do IC requerido.\n\n\nEncontrando o tamanho da amostra:\n\n\nn_ex02&lt;-length(f_extract)\ncat(\"O tamanho da amostra é de\", n_ex02, \"unidades.\")\n\nO tamanho da amostra é de 26 unidades.\n\n\n\nDeterminando o erro-padrão:\n\n\nerro_pad_ex02&lt;- sd(f_extract)/sqrt(n_ex02)\ncat(\"O erro-padrão amostral é igual a \", erro_pad_ex02, \"Libras\")\n\nO erro-padrão amostral é igual a  0.3245206 Libras\n\n\n\nDeterminando o IC(95%):\n\n\nt2&lt;-qt(0.025, df=(n_ex02-1), lower.tail = FALSE)\nt2\n\n[1] 2.059539\n\nIC_inferior&lt;- mean(f_extract)-(t2*erro_pad_ex02)\nIC_superior&lt;- mean(f_extract)+(t2*erro_pad_ex02)\nIC_condut&lt;-c(IC_inferior, IC_superior)\nIC_condut\n\n[1] 74.94702 76.28375\n\n\n\nUtilize o comando t.test para conferir suas contas.\n\n\nt.test(f_extract)\n\n\n    One Sample t-test\n\ndata:  f_extract\nt = 233.01, df = 25, p-value &lt; 2.2e-16\nalternative hypothesis: true mean is not equal to 0\n95 percent confidence interval:\n 74.94702 76.28375\nsample estimates:\nmean of x \n 75.61538 \n\n\n\nUtilize agora um IC de 90%. Explique o que ocorreu com o IC determinado comparado ao anterior (letra b).\n\n\nt.test(f_extract, conf.level=0.90)\n\n\n    One Sample t-test\n\ndata:  f_extract\nt = 233.01, df = 25, p-value &lt; 2.2e-16\nalternative hypothesis: true mean is not equal to 0\n90 percent confidence interval:\n 75.06106 76.16971\nsample estimates:\nmean of x \n 75.61538 \n\n\nA amplitude do IC(90%) é de (76.17-75.06 = 1.11), enquanto a amplitude do IC (95%) é de (76.28 - 74.95 = 1,33), uma variação de (1,33 - 1,11 = 0,22) a menor.\n\nt&lt;-qt(0.025, df=9, lower.tail = FALSE)\nt\n\n[1] 2.262157\n\ndf2&lt;-n_ex02-1\ndf2\n\n[1] 25\n\nt2&lt;-qt(0.05, df=25, lower.tail = FALSE)\nt2\n\n[1] 1.708141\n\n\nLembrando que:\n\\[ IC^{95} = \\bar{x} \\pm t_ {(n-1);\\alpha/2}.\\frac{s}{\\sqrt n}\\]\nPor isso ocorre que o valor de IC(90%) é mais “rigoroso” (mais estreita) para o IC de 90%, pois o valor de t do teste é menor (1,71 contra 2,26). Isso significa que quando se deseja maior “confiança” no teste, obviamente a faixa de possíveis vaores para a estatística deve aumentar (maior a amplitude para um determinado valor da estimativa cair na faixa considerada!).\n\nDetermine o erro de estimativa para os IC’s de 90% e 95%.\n\nO Erro de estimativa \\(\\epsilon\\) é dado por:\n\\[ \\epsilon = t_ {(n-1);\\alpha/2}.\\frac{s}{\\sqrt n}\\] Assim, os erros de cada IC podem ser determinados:\n\nIC 95%:\n\n\nt95&lt;-qt(0.025, df=25, lower.tail=FALSE)\nerro95&lt;-t95*sd(f_extract)/sqrt(length(f_extract))\ncat(\"O erro de estimativa para IC de 95% é de\", erro95)\n\nO erro de estimativa para IC de 95% é de 0.6683627\n\n\n\nIC 90%:\n\n\nt90&lt;-qt(0.05, df=25, lower.tail=FALSE)\nerro90&lt;-t90*sd(f_extract)/sqrt(length(f_extract))\ncat(\"O erro de estimativa para IC de 95% é de\", erro90)\n\nO erro de estimativa para IC de 95% é de 0.5543268\n\n\n\n\n\n\n\n\nNote\n\n\n\nNote que o erro de estimativa é a metade da amplitude da faixa de variação do IC em cada caso.\n\n\n\n\n\nPodemos interpretar o valor do IC que temos uma “confiança de x%” de que esse intervalo em especial contenha o valor desconhecido da média populacional \\(\\mu\\). Na imagem abaixo, para m=100 amostras de tamanho (n=3) cada uma, em 5 amostras m não foi encontrado o valor médio da população (\\(\\mu\\)=200), destacados em pontos vermelhos. Esse seria o IC de 95%:\n\n\n\n\n\nSe tomarmos IC de 90%, teríamos 10 amostras que não conteriam o valor real da média populacional, ou seja, à medida que diminui o IC maior o número de vezes em que a amostra não contrá o valor esperado da média populacional.\n\n\n\nSegundo o Teorema Central do Limite para proporções, define-se que:\n\\[ Z = \\frac{\\bar{p} - p}{{\\sqrt {(p(1-p) / n)}}}\\] o IC para proporções pode assim ser definido como:\n\\[ IC = \\hat{p} \\pm Z_ \\frac{\\alpha}{2}.\\sqrt {\\hat{p}(1-\\hat{p}) / n)}  \\]\nA proporção \\(\\hat{p}\\) é determinada pela relação a quantidade de interesse e o tamanho da amostra.\nExemplo 03\nUma amostra de 85 rolamentos de virabrequim gerou a informação de que 10 deles estavam com excesso de rugosidade superficial. qual seria o intervalo de confiança de 95% para essa produção de rolamentos?\n\nDeterminação da proporção de defeituosos:\n\n\\(\\hat{p}\\)= 10/85 = 0,12 ou 12% com excesso de rugosidade.\nAssim,\n\\[ IC^{95} = \\hat{p} \\pm Z_ \\frac{\\alpha}{2}.\\sqrt {\\hat{p}(1-\\hat{p}) / n)}  \\] Sabendo que o valor da estatística \\(Z \\frac{\\alpha}{2}\\) para IC de 95% é igual a:\n\nz95&lt;-qnorm(0.025, mean=0, sd=1, lower.tail=FALSE)\nz95\n\n[1] 1.959964\n\n\ntemos:\n\\[ IC^{95} = 0.12 \\pm 1.959964.\\sqrt {0.12(1-0.12) / 85)} \\] O IC resultante fornece o intervalo de [0.05; 0.19] % de proporção de peças com rugosidades em excesso.\nExemplo 04\nDetermine para o exercício 03 anterior:\n\no desvio-padrão para a proporção de peças analisadas.\n\nPode ser encontrado por: \\[ DP = \\sqrt{\\hat{p}(1-\\hat{p})/n}\\]\nAssim, o DP é de:\n\\[ DP = \\sqrt{0.12(1-0.12) / 85)} = 0.035 \\]\n\no Erro de estimativa.\n\nO erro de estimativa \\(\\epsilon\\) é de:\n\\[\\epsilon= Z_{\\frac{\\alpha}{2}}.DP\\] \\[\\epsilon= 1.959964*0.035 = 0,069\\] Usando o script do R:\n\nDP&lt;-0.035\nerro3&lt;- qnorm(0.025, mean=0, sd=1, lower.tail=FALSE)*DP\ncat(\"O erro de estimação para a proporção é de\", erro3)\n\nO erro de estimação para a proporção é de 0.06859874\n\n\n\n\n\nAo explicitarmos o valor de n na equação do erro de estimativa, obtemos:\n\\[ n = (Z_{{\\frac{\\alpha}{2}}/{E}})^2 . \\hat{p}(1-\\hat{p})\\]\nSe fosse desejado obter um erro de estimativa máximo de 5% para o exemplo 03, o tamanho da amostra mínima n para esse erro seria de:\n\\[ n = (1.96/0.05)^2 . 0.12(1-0.12)= 162,3 \\] Seriam necessárias 163 amostras para detectar um erro máximo de 5%, ou erro de 0.05. O iC para este caso seria de :\n\nLimite Inferior: 0.12 - 0.05 = 0.07\nLimite superior: 0.12 + 0.05 = 0.17\n\n\n\n\nDe uma maneira geral, o tamanho de amostra para médias de uma população que segue a distribuição normal pode ser determinada por:\n\\[ n = (Z_{\\frac{\\alpha}{2}}.{\\sigma}/E)^2\\] Exemplo 05\nConsidere um teste Charpy para determinar a capacidade de absorção de energia de impacto de um produto metálico testado em laboratório. Os resultados dos testes de impacto de 10 amostras estão fornecidos abaixo. Determinar:\nDados:\n\ncharpy&lt;-c( 64.1, 64.7, 64.5, 64.6, 64.5, 64.3, 64.6, 64.8, 64.2, 64.3)\n\n\no iC de 95% para o teste de impacto, considerando a distribuição t.\n\nSabendo que:\n\\[ IC^{95} = \\bar{x} \\pm t_ {(n-1);\\alpha/2}.\\frac{s}{\\sqrt n}\\]\n\nmedia&lt;-mean(charpy)\nmedia\n\n[1] 64.46\n\ncat(\"A média de energia absorvida no impacto é de\", media, \"Joules\")\n\nA média de energia absorvida no impacto é de 64.46 Joules\n\nt95&lt;-qt(0.025, df=9, lower.tail=FALSE)\nt95\n\n[1] 2.262157\n\ns_charpy&lt;- sd(charpy)\ns_charpy\n\n[1] 0.2270585\n\nn&lt;-length(charpy)\nn\n\n[1] 10\n\nIC95&lt;- c(media-t95*s_charpy/sqrt(n), media+t95*s_charpy/sqrt(n))\nIC95\n\n[1] 64.29757 64.62243\n\n\n\nRepita a letra a considerando agora o desvio-padrão igual a 1 (populacional).\n\n\\[ IC^{95} = \\bar{x} \\pm Z_ \\frac{\\alpha}{2}.\\frac{\\sigma}{\\sqrt n}  \\] Assim, sabendo que :\n\nz95&lt;-qnorm(0.025, mean=0,sd=1, lower.tail=FALSE)\nz95\n\n[1] 1.959964\n\n\n\\[ IC^{95} = 64,46 \\pm 1,96.\\frac{1}{\\sqrt{10}}  \\]\nO IC para 95% de confiança é: [63,84; 65,08]. Note que as diferenças acima foram produzidas pelo uso de diferentes valores do coeficiente Z ou t na fórmula, bem como pelo desvio-padrão considerado. Para amostras grandes, o valor de t se aproxima ao de Z e assim, resta apenas a atenção para com o valor do desvio-padrão a ser utilizado (populacional ou amostral).\n\n\n\n\n\n\nImportant\n\n\n\nFique atento aos dados que possui para realizar os cálculos do IC. Se há o conhecimento prévio do desvio-padrão populacional, ou tenha uma amostra com n&gt;30, o teste Z é indicado. Caso contrário, onde se tenha apenas uma estimativa pontual do desvio-padrão (amostral), e n&lt;30, use o teste T para determinar o IC.\n\n\nO comprimento do intervalo de confiança (amplitude) é uma medida da precisão da estimação. Deseja-se obter, em geral, um intervalo de confiança de menor amplitude possível e que permita a tomada de decisão com adequada confiança na estatística produzida. Isso pode ser feito pela escolha de uma amostra com tamanho “n” grande o suficiente para gerar a precisão necessária.\n\n\n\n\n\n\nWarning\n\n\n\nÉ sempre importante se atentar para a normalidade dos dados. As estatísticas até aqui apresentadas partem do principio que os dados seguem uma distribuição normal, co testes chamados paramétricos. Caso não sejam cpnsiderados normais, outros testes (não-paramétricos) deverão ser utilizados.\n\n\n\n\n\nEm algumas situações a variabilidade é o maior interesse de controle, não necessariametne sempre será o valor médio ou estimativa pontual de algum parâmetro de medida central. A variância (ou o desvio-padrão, por consequência) pode ser o alvo de ação de controle e otimização.\nSe uma amostra aleatória de tamanho n possui distribuição normal ($; ²), pode-se afirmar que a variável aleatória possui uma distribuição Qui-quadrado, tal que:\n\\[ \\chi² = \\frac{(n-1)s²}{\\sigma²}\\] Cponsiderando um caso aleatório em que haja, por exemplo, 5 graus de liberdade (n=6), temos a seguinte curva característica da distribuição:\n\nx &lt;- rchisq(50000, df = 5)\n  \nhist(x, \n     freq = FALSE, \n     xlim = c(0,16), \n     ylim = c(0,0.2))\ncurve(dchisq(x, df = 5), from = 0, to = 15, \n      n = 5000, col= 'red', lwd=2, add = T, main= \"Distribuição Qui-Quadrado\")\n\n\n\n\n\n\n\n\nIgualmente temos na curva de distribuição Qui-quadrado duas caldas a analisar, com significância igual a \\(\\frac{\\alpha}{2}\\) em cada uma delas.\nO IC para a variância será dado por:\n\\[ IC(\\sigma²)= [\\frac{(n-1)s²}{\\chi²_{(n-1);{\\alpha/2}}};\\frac{(n-1)s²}{\\chi²_{(n-1);{1}-\\frac{\\alpha}{2}}}  ]\\]\nVamos analisar um desses casos.\nExemplo 06\nUma máuina de envase é utilizada para encher garrafas com detergente líquido. Se a variância do volume de enchimento exceder 0,30ml² existirá uma proporção de garrafas que poderá ter enchimento incompleto ou em excesso. Assim, uma amostra de 20 garrafas foi obtida da linha de envase e obteve-se o valor para a variância igual a 0,45 ml². Sabendo que os dados seguem uma distribuição normal, avaliar para um IC de 95%:\n\\[ IC(\\sigma²)= [\\frac{(20-1)(0.45)}{\\chi²_{(20-1);0.025}};\\frac{(20-1)(0.45)}{\\chi²_{(20-1);{0.975}}}  ]\\]\nPara determinar os valores de \\(\\chi²\\) usamos os seguintes comandos no R:\n\nPara a calda inferior:\n\n\nqchisq(0.975, df=19, lower.tail=FALSE)\n\n[1] 8.906516\n\n\n\nPara a cauda superior:\n\n\nqchisq(0.025, df=19, lower.tail=FALSE)\n\n[1] 32.85233\n\n\nAssim o IC para a variância, fica:\n\\[IC(\\sigma²)= [\\frac{(20-1)(0.45)}{32.85233};\\frac{(20-1)(0.45)}{8.906516}]\\] \\[IC(\\sigma²)= [0,26; 0,96]\\] A variância do volume das garrafas de detergente desta linha de produção está entre 0,26 ml² e 0,96 ml², com 95% de confiança. Conclui-se que haverá problemas de enchimento nesse perfil de ajuste d eprodução do envase de detergentes, pois a variância 0,30ml² está presente no intervalo de confiança, ou seja, haverá variabilidade superior a este padrão.",
+    "crumbs": [
+      "Autor",
+      "Distribuição de Dados e Amostras",
+      "Intervalos Estatísticos"
+    ]
+  },
+  {
+    "objectID": "intervalos.html#comando-t.test-para-ics",
+    "href": "intervalos.html#comando-t.test-para-ics",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "Para evitar fazer as fórmulas de cálculo, podemo sutilizar alternativamente um comando rápido, o “t.test”, que roda o teste t de student conforme calculamos acima. Para a estimativa pontual, basta digitar:\n\nt.test(condut)$estimate   #Estimativa pontual\n\nmean of x \n   41.924 \n\n\nPara a estimativa intervalar, basta digitar:\n\nt.test(condut,conf.level=0.95)$conf.int  #Intervalo de Confiança\n\n[1] 41.72076 42.12724\nattr(,\"conf.level\")\n[1] 0.95",
+    "crumbs": [
+      "Autor",
+      "Distribuição de Dados e Amostras",
+      "Intervalos Estatísticos"
+    ]
+  },
+  {
+    "objectID": "intervalos.html#analise-da-suposição-de-normalidade",
+    "href": "intervalos.html#analise-da-suposição-de-normalidade",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "boxplot(condut)\n\n\n\n\n\n\n\n\n\nqqnorm(condut); qqline(condut)",
+    "crumbs": [
+      "Autor",
+      "Distribuição de Dados e Amostras",
+      "Intervalos Estatísticos"
+    ]
+  },
+  {
+    "objectID": "intervalos.html#testes-de-shapiro-wilk",
+    "href": "intervalos.html#testes-de-shapiro-wilk",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "Teste de Shapiro-Wilk\nH0: os dados vieram de uma distribuição que segue o modelo Normal\nHA: os dados não vieram de uma distribuição que segue o modelo Normal\n\nshapiro.test(condut)\n\n\n    Shapiro-Wilk normality test\n\ndata:  condut\nW = 0.97355, p-value = 0.9216\n\n\nCom base nos testes acima, não há evidências contra a suposição de normalidade dos dados, não rejeitando-se a Ho (valor-p igual a 0.9216&gt; nível de significância 0.05).\nExemplo 01\nOs dados a seguir são relativos à força (em libras) necessária para se extrair um conector usado em fabricação de motores. Pede-se:\nDados:\n\nf_extract&lt;-c(79.3, 75.1, 78.2, 74.1, 73.9, 75.0, 77.6, 77.3, 73.8, \n             74.6, 75.5, 74.0, 74.7, 75.9, 72.9, 73.8, 74.2, 78.1,\n             75.4, 76.3, 75.3, 76.2, 74.9, 78.0, 75.1, 76.8)\n\n\nDetermine a estimativa pontual da força de extração do conector.\n\n\nf_media&lt;-mean(f_extract)\ncat(\"A força de extração média do conector é de\",f_media, \"libras\")\n\nA força de extração média do conector é de 75.61538 libras\n\n\n\nDetermine o valor da força que separa os 50% maiores esforços dos outros 50% menores.\n\nO valor que separa 50% dos dados é a mediana. Assim:\n\nmediana&lt;-median(f_extract)\ncat(\" O valor que separa 50% dos dados à esquerda e à direita é:\", mediana, \"libras\")\n\n O valor que separa 50% dos dados à esquerda e à direita é: 75.2 libras\n\n\n\nDetermine as estimativas pontuais do desvio-padrão e variância dos dados de força de extração do conector.\n\n\nDesvio-padrão:\n\n\ndp_f&lt;-sd(f_extract)\ncat(\"O desvio-padrão da força de extração do conector é de\", dp_f, \"libras\")\n\nO desvio-padrão da força de extração do conector é de 1.654737 libras\n\n\n\nVariância:\n\n\nvariancia&lt;-var(f_extract)\ncat(\"A variância da força de extração do conector é de\", variancia, \"libras\")\n\nA variância da força de extração do conector é de 2.738154 libras\n\n\n\nDetermine a estimativa pontual do erro-padrão da força de extração do conector.\n\n\nErro-padrão:\n\n\nerro_pad&lt;- sd(f_extract)/sqrt(length(f_extract))\ncat(\"O erro-padrão amostral é igual a \", erro_pad, \"Libras\")\n\nO erro-padrão amostral é igual a  0.3245206 Libras\n\n\n\nDetermine uma estimativa pontual da proporção de conectores que limita a força em 73 libras.\n\nPara isso deve ser determinado o valor da estimativa do teste t, que fornecerá o valor para o qual se associa 73 libras na distribuição t.\nO teste t, define-se por:\n\\[ T = \\frac{\\bar{x} - \\mu}{\\frac{s}{\\sqrt n}}\\]\nAssim,\n\\[ T = \\frac{73 - 75,61}{\\frac{1,65}{\\sqrt 26}}= -2,61\\] Assim, o valor da proporção de conectores que não superam 73 libras de força é de:\n\np73&lt;-pt(-2.61, df=25)\ncat(\"Cerca de\", 100*p73, \"% dos conectores terão força de extração menor que 73 libras.\")\n\nCerca de 0.7538574 % dos conectores terão força de extração menor que 73 libras.\n\n\n\n# Determinar o quantil para uma área igual a 5% na curva normal, unicaudal inferior.\nq&lt;-qnorm(0.007539, mean = 0, sd = 1)\nz &lt;- seq(-3,3,0.01)\npd &lt;- dnorm(z)\nplot(z,pd,type=\"l\", main=\"Força de Extração &lt; 73 Libras\")\npolygon(c(z[z&lt;=q],q),c(pd[z&lt;=q],pd[z==-3]),col=\"red\")\nabline(v=60, h=0, lty=2)\ntext(-2.7,0.05,\"0,75%\")\nmtext(\"z=-2,61\")\n\n\n\n\n\n\n\n\nExemplo 02\nPara o exercício 01, faça uma estimativa intervalar da força de extração do conector, considerando um IC de 95%, das seguintes formas:\n\nAplique a fórmula de determinação do IC requerido.\n\n\nEncontrando o tamanho da amostra:\n\n\nn_ex02&lt;-length(f_extract)\ncat(\"O tamanho da amostra é de\", n_ex02, \"unidades.\")\n\nO tamanho da amostra é de 26 unidades.\n\n\n\nDeterminando o erro-padrão:\n\n\nerro_pad_ex02&lt;- sd(f_extract)/sqrt(n_ex02)\ncat(\"O erro-padrão amostral é igual a \", erro_pad_ex02, \"Libras\")\n\nO erro-padrão amostral é igual a  0.3245206 Libras\n\n\n\nDeterminando o IC(95%):\n\n\nt2&lt;-qt(0.025, df=(n_ex02-1), lower.tail = FALSE)\nt2\n\n[1] 2.059539\n\nIC_inferior&lt;- mean(f_extract)-(t2*erro_pad_ex02)\nIC_superior&lt;- mean(f_extract)+(t2*erro_pad_ex02)\nIC_condut&lt;-c(IC_inferior, IC_superior)\nIC_condut\n\n[1] 74.94702 76.28375\n\n\n\nUtilize o comando t.test para conferir suas contas.\n\n\nt.test(f_extract)\n\n\n    One Sample t-test\n\ndata:  f_extract\nt = 233.01, df = 25, p-value &lt; 2.2e-16\nalternative hypothesis: true mean is not equal to 0\n95 percent confidence interval:\n 74.94702 76.28375\nsample estimates:\nmean of x \n 75.61538 \n\n\n\nUtilize agora um IC de 90%. Explique o que ocorreu com o IC determinado comparado ao anterior (letra b).\n\n\nt.test(f_extract, conf.level=0.90)\n\n\n    One Sample t-test\n\ndata:  f_extract\nt = 233.01, df = 25, p-value &lt; 2.2e-16\nalternative hypothesis: true mean is not equal to 0\n90 percent confidence interval:\n 75.06106 76.16971\nsample estimates:\nmean of x \n 75.61538 \n\n\nA amplitude do IC(90%) é de (76.17-75.06 = 1.11), enquanto a amplitude do IC (95%) é de (76.28 - 74.95 = 1,33), uma variação de (1,33 - 1,11 = 0,22) a menor.\n\nt&lt;-qt(0.025, df=9, lower.tail = FALSE)\nt\n\n[1] 2.262157\n\ndf2&lt;-n_ex02-1\ndf2\n\n[1] 25\n\nt2&lt;-qt(0.05, df=25, lower.tail = FALSE)\nt2\n\n[1] 1.708141\n\n\nLembrando que:\n\\[ IC^{95} = \\bar{x} \\pm t_ {(n-1);\\alpha/2}.\\frac{s}{\\sqrt n}\\]\nPor isso ocorre que o valor de IC(90%) é mais “rigoroso” (mais estreita) para o IC de 90%, pois o valor de t do teste é menor (1,71 contra 2,26). Isso significa que quando se deseja maior “confiança” no teste, obviamente a faixa de possíveis vaores para a estatística deve aumentar (maior a amplitude para um determinado valor da estimativa cair na faixa considerada!).\n\nDetermine o erro de estimativa para os IC’s de 90% e 95%.\n\nO Erro de estimativa \\(\\epsilon\\) é dado por:\n\\[ \\epsilon = t_ {(n-1);\\alpha/2}.\\frac{s}{\\sqrt n}\\] Assim, os erros de cada IC podem ser determinados:\n\nIC 95%:\n\n\nt95&lt;-qt(0.025, df=25, lower.tail=FALSE)\nerro95&lt;-t95*sd(f_extract)/sqrt(length(f_extract))\ncat(\"O erro de estimativa para IC de 95% é de\", erro95)\n\nO erro de estimativa para IC de 95% é de 0.6683627\n\n\n\nIC 90%:\n\n\nt90&lt;-qt(0.05, df=25, lower.tail=FALSE)\nerro90&lt;-t90*sd(f_extract)/sqrt(length(f_extract))\ncat(\"O erro de estimativa para IC de 95% é de\", erro90)\n\nO erro de estimativa para IC de 95% é de 0.5543268\n\n\n\n\n\n\n\n\nNote\n\n\n\nNote que o erro de estimativa é a metade da amplitude da faixa de variação do IC em cada caso.",
+    "crumbs": [
+      "Autor",
+      "Distribuição de Dados e Amostras",
+      "Intervalos Estatísticos"
+    ]
+  },
+  {
+    "objectID": "intervalos.html#interpretação-do-ic",
+    "href": "intervalos.html#interpretação-do-ic",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "Podemos interpretar o valor do IC que temos uma “confiança de x%” de que esse intervalo em especial contenha o valor desconhecido da média populacional \\(\\mu\\). Na imagem abaixo, para m=100 amostras de tamanho (n=3) cada uma, em 5 amostras m não foi encontrado o valor médio da população (\\(\\mu\\)=200), destacados em pontos vermelhos. Esse seria o IC de 95%:\n\n\n\n\n\nSe tomarmos IC de 90%, teríamos 10 amostras que não conteriam o valor real da média populacional, ou seja, à medida que diminui o IC maior o número de vezes em que a amostra não contrá o valor esperado da média populacional.",
+    "crumbs": [
+      "Autor",
+      "Distribuição de Dados e Amostras",
+      "Intervalos Estatísticos"
+    ]
+  },
+  {
+    "objectID": "intervalos.html#intervalo-de-confiança-para-proporções",
+    "href": "intervalos.html#intervalo-de-confiança-para-proporções",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "Segundo o Teorema Central do Limite para proporções, define-se que:\n\\[ Z = \\frac{\\bar{p} - p}{{\\sqrt {(p(1-p) / n)}}}\\] o IC para proporções pode assim ser definido como:\n\\[ IC = \\hat{p} \\pm Z_ \\frac{\\alpha}{2}.\\sqrt {\\hat{p}(1-\\hat{p}) / n)}  \\]\nA proporção \\(\\hat{p}\\) é determinada pela relação a quantidade de interesse e o tamanho da amostra.\nExemplo 03\nUma amostra de 85 rolamentos de virabrequim gerou a informação de que 10 deles estavam com excesso de rugosidade superficial. qual seria o intervalo de confiança de 95% para essa produção de rolamentos?\n\nDeterminação da proporção de defeituosos:\n\n\\(\\hat{p}\\)= 10/85 = 0,12 ou 12% com excesso de rugosidade.\nAssim,\n\\[ IC^{95} = \\hat{p} \\pm Z_ \\frac{\\alpha}{2}.\\sqrt {\\hat{p}(1-\\hat{p}) / n)}  \\] Sabendo que o valor da estatística \\(Z \\frac{\\alpha}{2}\\) para IC de 95% é igual a:\n\nz95&lt;-qnorm(0.025, mean=0, sd=1, lower.tail=FALSE)\nz95\n\n[1] 1.959964\n\n\ntemos:\n\\[ IC^{95} = 0.12 \\pm 1.959964.\\sqrt {0.12(1-0.12) / 85)} \\] O IC resultante fornece o intervalo de [0.05; 0.19] % de proporção de peças com rugosidades em excesso.\nExemplo 04\nDetermine para o exercício 03 anterior:\n\no desvio-padrão para a proporção de peças analisadas.\n\nPode ser encontrado por: \\[ DP = \\sqrt{\\hat{p}(1-\\hat{p})/n}\\]\nAssim, o DP é de:\n\\[ DP = \\sqrt{0.12(1-0.12) / 85)} = 0.035 \\]\n\no Erro de estimativa.\n\nO erro de estimativa \\(\\epsilon\\) é de:\n\\[\\epsilon= Z_{\\frac{\\alpha}{2}}.DP\\] \\[\\epsilon= 1.959964*0.035 = 0,069\\] Usando o script do R:\n\nDP&lt;-0.035\nerro3&lt;- qnorm(0.025, mean=0, sd=1, lower.tail=FALSE)*DP\ncat(\"O erro de estimação para a proporção é de\", erro3)\n\nO erro de estimação para a proporção é de 0.06859874",
+    "crumbs": [
+      "Autor",
+      "Distribuição de Dados e Amostras",
+      "Intervalos Estatísticos"
+    ]
+  },
+  {
+    "objectID": "intervalos.html#tamanho-da-amostra-para-proporções",
+    "href": "intervalos.html#tamanho-da-amostra-para-proporções",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "Ao explicitarmos o valor de n na equação do erro de estimativa, obtemos:\n\\[ n = (Z_{{\\frac{\\alpha}{2}}/{E}})^2 . \\hat{p}(1-\\hat{p})\\]\nSe fosse desejado obter um erro de estimativa máximo de 5% para o exemplo 03, o tamanho da amostra mínima n para esse erro seria de:\n\\[ n = (1.96/0.05)^2 . 0.12(1-0.12)= 162,3 \\] Seriam necessárias 163 amostras para detectar um erro máximo de 5%, ou erro de 0.05. O iC para este caso seria de :\n\nLimite Inferior: 0.12 - 0.05 = 0.07\nLimite superior: 0.12 + 0.05 = 0.17",
+    "crumbs": [
+      "Autor",
+      "Distribuição de Dados e Amostras",
+      "Intervalos Estatísticos"
+    ]
+  },
+  {
+    "objectID": "intervalos.html#tamanho-de-amostra-para-dados-normais",
+    "href": "intervalos.html#tamanho-de-amostra-para-dados-normais",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "De uma maneira geral, o tamanho de amostra para médias de uma população que segue a distribuição normal pode ser determinada por:\n\\[ n = (Z_{\\frac{\\alpha}{2}}.{\\sigma}/E)^2\\] Exemplo 05\nConsidere um teste Charpy para determinar a capacidade de absorção de energia de impacto de um produto metálico testado em laboratório. Os resultados dos testes de impacto de 10 amostras estão fornecidos abaixo. Determinar:\nDados:\n\ncharpy&lt;-c( 64.1, 64.7, 64.5, 64.6, 64.5, 64.3, 64.6, 64.8, 64.2, 64.3)\n\n\no iC de 95% para o teste de impacto, considerando a distribuição t.\n\nSabendo que:\n\\[ IC^{95} = \\bar{x} \\pm t_ {(n-1);\\alpha/2}.\\frac{s}{\\sqrt n}\\]\n\nmedia&lt;-mean(charpy)\nmedia\n\n[1] 64.46\n\ncat(\"A média de energia absorvida no impacto é de\", media, \"Joules\")\n\nA média de energia absorvida no impacto é de 64.46 Joules\n\nt95&lt;-qt(0.025, df=9, lower.tail=FALSE)\nt95\n\n[1] 2.262157\n\ns_charpy&lt;- sd(charpy)\ns_charpy\n\n[1] 0.2270585\n\nn&lt;-length(charpy)\nn\n\n[1] 10\n\nIC95&lt;- c(media-t95*s_charpy/sqrt(n), media+t95*s_charpy/sqrt(n))\nIC95\n\n[1] 64.29757 64.62243\n\n\n\nRepita a letra a considerando agora o desvio-padrão igual a 1 (populacional).\n\n\\[ IC^{95} = \\bar{x} \\pm Z_ \\frac{\\alpha}{2}.\\frac{\\sigma}{\\sqrt n}  \\] Assim, sabendo que :\n\nz95&lt;-qnorm(0.025, mean=0,sd=1, lower.tail=FALSE)\nz95\n\n[1] 1.959964\n\n\n\\[ IC^{95} = 64,46 \\pm 1,96.\\frac{1}{\\sqrt{10}}  \\]\nO IC para 95% de confiança é: [63,84; 65,08]. Note que as diferenças acima foram produzidas pelo uso de diferentes valores do coeficiente Z ou t na fórmula, bem como pelo desvio-padrão considerado. Para amostras grandes, o valor de t se aproxima ao de Z e assim, resta apenas a atenção para com o valor do desvio-padrão a ser utilizado (populacional ou amostral).\n\n\n\n\n\n\nImportant\n\n\n\nFique atento aos dados que possui para realizar os cálculos do IC. Se há o conhecimento prévio do desvio-padrão populacional, ou tenha uma amostra com n&gt;30, o teste Z é indicado. Caso contrário, onde se tenha apenas uma estimativa pontual do desvio-padrão (amostral), e n&lt;30, use o teste T para determinar o IC.\n\n\nO comprimento do intervalo de confiança (amplitude) é uma medida da precisão da estimação. Deseja-se obter, em geral, um intervalo de confiança de menor amplitude possível e que permita a tomada de decisão com adequada confiança na estatística produzida. Isso pode ser feito pela escolha de uma amostra com tamanho “n” grande o suficiente para gerar a precisão necessária.\n\n\n\n\n\n\nWarning\n\n\n\nÉ sempre importante se atentar para a normalidade dos dados. As estatísticas até aqui apresentadas partem do principio que os dados seguem uma distribuição normal, co testes chamados paramétricos. Caso não sejam cpnsiderados normais, outros testes (não-paramétricos) deverão ser utilizados.",
+    "crumbs": [
+      "Autor",
+      "Distribuição de Dados e Amostras",
+      "Intervalos Estatísticos"
+    ]
+  },
+  {
+    "objectID": "intervalos.html#intervalo-de-confiança-para-variância",
+    "href": "intervalos.html#intervalo-de-confiança-para-variância",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "Em algumas situações a variabilidade é o maior interesse de controle, não necessariametne sempre será o valor médio ou estimativa pontual de algum parâmetro de medida central. A variância (ou o desvio-padrão, por consequência) pode ser o alvo de ação de controle e otimização.\nSe uma amostra aleatória de tamanho n possui distribuição normal ($; ²), pode-se afirmar que a variável aleatória possui uma distribuição Qui-quadrado, tal que:\n\\[ \\chi² = \\frac{(n-1)s²}{\\sigma²}\\] Cponsiderando um caso aleatório em que haja, por exemplo, 5 graus de liberdade (n=6), temos a seguinte curva característica da distribuição:\n\nx &lt;- rchisq(50000, df = 5)\n  \nhist(x, \n     freq = FALSE, \n     xlim = c(0,16), \n     ylim = c(0,0.2))\ncurve(dchisq(x, df = 5), from = 0, to = 15, \n      n = 5000, col= 'red', lwd=2, add = T, main= \"Distribuição Qui-Quadrado\")\n\n\n\n\n\n\n\n\nIgualmente temos na curva de distribuição Qui-quadrado duas caldas a analisar, com significância igual a \\(\\frac{\\alpha}{2}\\) em cada uma delas.\nO IC para a variância será dado por:\n\\[ IC(\\sigma²)= [\\frac{(n-1)s²}{\\chi²_{(n-1);{\\alpha/2}}};\\frac{(n-1)s²}{\\chi²_{(n-1);{1}-\\frac{\\alpha}{2}}}  ]\\]\nVamos analisar um desses casos.\nExemplo 06\nUma máuina de envase é utilizada para encher garrafas com detergente líquido. Se a variância do volume de enchimento exceder 0,30ml² existirá uma proporção de garrafas que poderá ter enchimento incompleto ou em excesso. Assim, uma amostra de 20 garrafas foi obtida da linha de envase e obteve-se o valor para a variância igual a 0,45 ml². Sabendo que os dados seguem uma distribuição normal, avaliar para um IC de 95%:\n\\[ IC(\\sigma²)= [\\frac{(20-1)(0.45)}{\\chi²_{(20-1);0.025}};\\frac{(20-1)(0.45)}{\\chi²_{(20-1);{0.975}}}  ]\\]\nPara determinar os valores de \\(\\chi²\\) usamos os seguintes comandos no R:\n\nPara a calda inferior:\n\n\nqchisq(0.975, df=19, lower.tail=FALSE)\n\n[1] 8.906516\n\n\n\nPara a cauda superior:\n\n\nqchisq(0.025, df=19, lower.tail=FALSE)\n\n[1] 32.85233\n\n\nAssim o IC para a variância, fica:\n\\[IC(\\sigma²)= [\\frac{(20-1)(0.45)}{32.85233};\\frac{(20-1)(0.45)}{8.906516}]\\] \\[IC(\\sigma²)= [0,26; 0,96]\\] A variância do volume das garrafas de detergente desta linha de produção está entre 0,26 ml² e 0,96 ml², com 95% de confiança. Conclui-se que haverá problemas de enchimento nesse perfil de ajuste d eprodução do envase de detergentes, pois a variância 0,30ml² está presente no intervalo de confiança, ou seja, haverá variabilidade superior a este padrão.",
+    "crumbs": [
+      "Autor",
+      "Distribuição de Dados e Amostras",
+      "Intervalos Estatísticos"
+    ]
+  },
+  {
+    "objectID": "exerc_prop_gqt.html",
+    "href": "exerc_prop_gqt.html",
+    "title": "exerc_prop",
+    "section": "",
+    "text": "Back to top"
+  },
+  {
+    "objectID": "eng_data/teste_hipoteses.html",
+    "href": "eng_data/teste_hipoteses.html",
+    "title": "Teste de Hipóteses",
+    "section": "",
+    "text": "Em construção\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "eng_data/testes_estat.html",
+    "href": "eng_data/testes_estat.html",
+    "title": "testes_estat",
+    "section": "",
+    "text": "Back to top"
+  },
+  {
+    "objectID": "eng_data/normalidade.html",
+    "href": "eng_data/normalidade.html",
+    "title": "Normalidade dos Dados",
+    "section": "",
+    "text": "A distribuição mais amplamente utilizada é a distribuição normal de Gauss (gaussiana). Dado o Teorema do Limite Central, que estabelece que à medida que haja a realização de um experimento aleatório que gere dados aleatórios de uma variável, e que, aumentando o número de réplicas desse experimento e aumentando assim o número de amostras obtidas, a esperança de que um valor médio surja naturalmente como tempo, dado que será o valor médio dos pontos amostrados, gerando um curva simétrica com média igual à média populacional (\\(\\mu\\)) e desvio padrão populacional conhecido (\\(\\sigma²\\)). Representamos assim a distribuição normal por N(\\(\\mu\\), \\(\\sigma²\\)).\nA melhor forma de visualizar a distribuição normal é a construção de curvas gaussianas a partir de valores de N(\\(\\mu\\), \\(\\sigma²\\)) conhecidos. Vamos rever os principais conceitos gráficos com os scripts em R a seguir."
+  },
+  {
+    "objectID": "eng_data/normalidade.html#introdução",
+    "href": "eng_data/normalidade.html#introdução",
+    "title": "Normalidade dos Dados",
+    "section": "",
+    "text": "A distribuição mais amplamente utilizada é a distribuição normal de Gauss (gaussiana). Dado o Teorema do Limite Central, que estabelece que à medida que haja a realização de um experimento aleatório que gere dados aleatórios de uma variável, e que, aumentando o número de réplicas desse experimento e aumentando assim o número de amostras obtidas, a esperança de que um valor médio surja naturalmente como tempo, dado que será o valor médio dos pontos amostrados, gerando um curva simétrica com média igual à média populacional (\\(\\mu\\)) e desvio padrão populacional conhecido (\\(\\sigma²\\)). Representamos assim a distribuição normal por N(\\(\\mu\\), \\(\\sigma²\\)).\nA melhor forma de visualizar a distribuição normal é a construção de curvas gaussianas a partir de valores de N(\\(\\mu\\), \\(\\sigma²\\)) conhecidos. Vamos rever os principais conceitos gráficos com os scripts em R a seguir."
+  },
+  {
+    "objectID": "eng_data/normalidade.html#elaborando-curvas-normais-com-r",
+    "href": "eng_data/normalidade.html#elaborando-curvas-normais-com-r",
+    "title": "Normalidade dos Dados",
+    "section": "Elaborando curvas normais com R",
+    "text": "Elaborando curvas normais com R\nNas análises estatísticas de dados normais, é comum gerar os histogramas para os dados e se determinar a área relativa abaixo da curva para um dado valor Z conhecido (vide curva normal padrão). Para tanto, basta conhecer o valor Z (Score Z) ou o valor da grandeza em análise e transformá-la no Score Z correspondente pela equação: \\[\nZ = \\dfrac{\\ \\bar{x} - \\mu}{s}\n\\] onde: \\[\n\\ \\bar{x} : é \\ o \\ valor \\ médio \\ amostral \\ da \\ variável\\ de \\ interesse.\n\\] \\[\n\\ \\mu : é \\ a \\ média \\ populacional\n\\] \\[\n\\ s: é \\ o \\ desvio-padrão\\ amostral.\n\\]\nVejamos como gerar alguns tipos de curvas normais a seguir."
+  },
+  {
+    "objectID": "eng_data/normalidade.html#ex.1---área-superior",
+    "href": "eng_data/normalidade.html#ex.1---área-superior",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.1 - Área superior",
+    "text": "Ex.1 - Área superior\nImagine que vocẽ queira gerar uma curva normal representativa de um deslocamento de um veículo que tenha média de velocidade igual a 60 Km/h e desvio-padrão de 20 km/h. Deseja-se marcar no histograma a área relativa às velocidades superiores a duas vezes o desvio-padrão, ou seja, 2 x 20 = 40 km/h acima da média de velocidade. Assim, deve ser marcada a área acima de 100km/h.\nHá duas maneiras de se fazer isso:\n\ngerar os dados de forma aleatória (o que aqui foi feito).\nColetar daddos reais e plotar.\n\nPara gerar os dados aleatórios, faz-se os seguintes passos:\n\nCriar uma sequência de pontos aleatórios em “steps” definidos, ou seja, a grandeza de diferenciação dos valores aleatórios. Armazenar em um vetor.\nCriar a distribuição normal da variável criada no passo anterior, definindo uma média e um desvio-padrão. Armazenar em um vetor.\nDefinir uma área de interesse para hachurar e gerar coordenadas em X e em Y para delimitar a área a hachurar.\nPlotar a curva e o polígono definido anteriormente.\nAdicioanr informações e linhas de interesse no histograma, como média, e outras formatações etéticas no gráfico.\n\nSegue um exemplo ilustrativo:\n\nx&lt;-seq(-30, 150, by =.01)\ny&lt;-dnorm(x, mean=60, sd=20, log = FALSE)\nrx&lt;-seq(100, 150, by =.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=60, sd=20, log=FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Velocidade (km/h)', ylab='fdp(x)', main=\"Distribuição Normal - Velocidade\")\npolygon(rx, ry, col = \"gray\")\nabline(v=60, h=0, lty=3)"
+  },
+  {
+    "objectID": "eng_data/normalidade.html#ex.2---área-intermediária",
+    "href": "eng_data/normalidade.html#ex.2---área-intermediária",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.2 - Área intermediária",
+    "text": "Ex.2 - Área intermediária\nNeste exemplo, deseja-se hachurar a área compreendida entre os quartis Q1 e Q3, para o exemplo anterior. Assim, sabendo que os quartis são inicialmente desconhecidos, devemos encontrálos através de comandos tipo “qnorm” no R. Os quantis seriam aqueles percentis que separam os 25% menores valores e os 75% maiores valores, estando entre eles 50% dos dados. Assim:\n\nQ1&lt;- qnorm(0.25, mean=60, sd=20) \nQ1\n\n[1] 46.5102\n\nQ3&lt;- qnorm(0.75, mean=60, sd=20)\nQ3\n\n[1] 73.4898\n\n\n\nx&lt;-seq(-30, 150, by = .01)\ny&lt;-dnorm(x, mean=60, sd=20, log = FALSE)\n\nrx&lt;-seq(Q1, Q3, by=.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=60, sd=20, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Velocidade (Km/h)', ylab='fdp(x)',\n     main = \"Distribuição Normal - Velocidade\")\npolygon(rx, ry, col = 'blue')\nabline(v=60, h=0, lty=3)\n\n\n\n\n\n\n\n\n\nAlternativa - sem escala Z\nHachurar a área superior onde se encontra o percentil sobre o qual está abaixo dele 99,73% dos dados.\nAssim:\n\np3sigma&lt;- qnorm(0.9973, mean=0, sd=1)\np3sigma\n\n[1] 2.78215\n\n\n\nx&lt;-seq(-4, 4, by =.01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nrx&lt;-seq(p3sigma, 4, by =.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Z', ylab='fdp', xaxt=\"n\", main=\"Distribuição Normal - Velocidade\")\naxis(1,at=p3sigma,labels=\"2.78\")\npolygon(rx, ry, col = \"red\")\nabline(v=0, h=0, lty=3)\ntext(3,0.1,\"0,27%\")\narrows(2.82,0.01,2.85,0.08,length = 0.1)\ntext(0, -0.005, 0)"
+  },
+  {
+    "objectID": "eng_data/normalidade.html#ex.3-área-inferior-com-z-score-conhecido",
+    "href": "eng_data/normalidade.html#ex.3-área-inferior-com-z-score-conhecido",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.3-Área Inferior com Z Score conhecido",
+    "text": "Ex.3-Área Inferior com Z Score conhecido\nHachurar a área que se encontra abaixo de -1 sigma de variação sobre a média, ou seja, \\(\\mu -1\\sigma\\) de variação.\n\nz &lt;- seq(-3,3,0.01)\npd &lt;- dnorm(z)\nplot(z,pd,type=\"l\", main=\"Distribuição Normal\")\npolygon(c(z[z&lt;=-1],-1),c(pd[z&lt;=-1],pd[z==-3]),col=\"green\")\nabline(v=0, h=0, lty=2)"
+  },
+  {
+    "objectID": "eng_data/normalidade.html#ex.4---área-inferior---escala-x",
+    "href": "eng_data/normalidade.html#ex.4---área-inferior---escala-x",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.4 - Área inferior - escala x",
+    "text": "Ex.4 - Área inferior - escala x\nHachurar área inferior que delimite a área contida entre -3 e -1,25 sigmas de variação. Neste exemplo foram criados valores específicos para serem mostrados no eixo x, relativos a pesos de produtos embalados (gramas) com média e desvio-padrões como se segue:\n\npesos&lt;-c(146,154,162,170,178,186,192)\nsummary(pesos)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n  146.0   158.0   170.0   169.7   182.0   192.0 \n\nsd(pesos)\n\n[1] 16.82968\n\n\n\nx &lt;- seq(-3,3,0.01)\nz &lt;- seq(-3,-1.25,0.01)\np &lt;- dnorm(z)\nz &lt;- c(z,-1.25,-3)\np &lt;- c(p,min(p),min(p))\nplot(x,dnorm(x),type=\"l\",xaxt=\"n\",ylab=\"probability density\",xlab=\"pesos (g)\",\n     main=\"Distribuição de Pesos do Produto\")\naxis(1,at=-3:3,labels=c(\"146\",\"154\",\"162\",\"170\",\"178\",\"186\",\"192\"))\npolygon(z,p,col=\"purple\")\nabline(h=0, lty=3)\ntext(-1.25,0.2,\"161,75g\")\n\n\n\n\n\n\n\n\nO valor equivalente a -1,25 sigmas pode ser determinado por:\n\\[ Z = \\frac{\\bar{x} - \\mu}{\\frac{\\sigma}{\\sqrt n}}\\] \\[ -1,25 = \\frac{\\bar{x} - 169,7}{\\frac{16,82968}{\\sqrt 7}}\\] Assim, o valor de \\(\\bar{x}\\) é de:\n\nx &lt;- ((-1.25)*16.82968/sqrt(7))+169.7\nx\n\n[1] 161.7487"
+  },
+  {
+    "objectID": "eng_data/normalidade.html#ex.5---área-superior---escala-x",
+    "href": "eng_data/normalidade.html#ex.5---área-superior---escala-x",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.5 - Área superior - escala x",
+    "text": "Ex.5 - Área superior - escala x\nSimilar ao anterior, agora definindo área superior, entre 1,875 e 3 sigmas.\n\nz &lt;- seq(1.875,3,0.01)\np &lt;- dnorm(z)\nz &lt;- c(z,3,1.875)\np &lt;- c(p,min(p),min(p))\nplot(x,dnorm(x),type=\"l\",xaxt=\"n\",ylab=\"probability density\",xlab=\"Peso (gramas)\", main=\"Distribuição de Pesos do Produto\")\naxis(1,at=-3:3,labels=c(\"146\",\"154\",\"162\",\"170\",\"178\",\"186\",\"192\"))\npolygon(z,p,col=\"red\")\nabline(h=0, lty=3)"
+  },
+  {
+    "objectID": "eng_data/normalidade.html#ex.6---área-intermediária---escala-x",
+    "href": "eng_data/normalidade.html#ex.6---área-intermediária---escala-x",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.6 - Área intermediária - escala x",
+    "text": "Ex.6 - Área intermediária - escala x\nSimilar aos anteriores 4 e 5, mas com área delimitada entre -0.635 e 1.25 sigmas.\n\nz &lt;- seq(-0.635,1.25,0.01)\np &lt;- dnorm(z)\nz &lt;- c(z,1.25,-0.635)\np &lt;- c(p,0,0)\nplot(x,dnorm(x),type=\"l\",xaxt=\"n\",ylab=\"probability density\",xlab=\"Peso (g)\", main=\"Distribuição de Pesos do Produto\")\naxis(1,at=-3:3,labels=c(\"146\",\"154\",\"162\",\"170\",\"178\",\"186\",\"192\"))\npolygon(z,p,col=\"yellow\")\nabline(h=0, lty=6)"
+  },
+  {
+    "objectID": "eng_data/normalidade.html#ex.7---quantil-conhecido",
+    "href": "eng_data/normalidade.html#ex.7---quantil-conhecido",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.7 - Quantil conhecido",
+    "text": "Ex.7 - Quantil conhecido\nDesejando-se determinar o mesmo quantil para o percentil 5%, mas agora, bicaudal, deve-se proceder da seguinte forma: adiciona-se ao comando qnorm o termo “lower.tail = FALSE”. Isso determinará o ponto equivalente superior na curva normal padrão; Entretanto, deve-se corrigir agora o termo 0.05 na entrada do comando qnorm, já que uma área de 5% será distribuída em duas caudas. Assim deve-se entrar com a metade do valor, que é 2,5% (ou 0.025).\n\n# Determinar o quantil para uma área igual a 5% na curva normal, unicaudal inferior.\n\nq&lt;-qnorm(0.025, mean = 0, sd = 1, lower.tail = FALSE)\nq\n\n[1] 1.959964\n\n\nPor simetria da curva, sabemos que o quantil inferior equivalente à 2,5% será q=-1,959964 (sinal negativo no valor anterior). Com isso sabemos que a área procurada será igual a 2x qualquer lado determinado anteriormente (0.95 ou 95%).\n\nx&lt;-seq(-3, 3, by = .01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nqnorm(0.025,0,1) ; qnorm(0.975,0,1)\n\n[1] -1.959964\n\n\n[1] 1.959964\n\nrx&lt;-seq(-1.96, 1.96, by=.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Curva Normal Padrão', ylab='fdp(x)',\n     main = \"Curva Normal Padrão\", col=\"black\")\npolygon(rx, ry, col = 'blue')\nabline(v=0, h=0, lty=3)\ntext(-2.5,0.1,\"2,5%\")\ntext(2.5,0.1,\"2,5%\")\ntext(0,0.12,\"95%\", col=\"white\")\nmtext(\"Área nas caudas: 5%\", adj = 0.5)\n\n\n\n\n\n\n\n\n\nqnorm(0.025,0,1) ; qnorm(0.975,0,1)\n\n[1] -1.959964\n\n\n[1] 1.959964"
+  },
+  {
+    "objectID": "eng_data/normalidade.html#ex.8-percentil-para-q0",
+    "href": "eng_data/normalidade.html#ex.8-percentil-para-q0",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.8-Percentil para q=0",
+    "text": "Ex.8-Percentil para q=0\nPara q=0, que é a posição central da curva normal, devemos encontrar uma área de 50% abaixo deste quantil (p=0.5). Confirmando:\n\npnorm(0, mean=0, sd=1)\n\n[1] 0.5\n\n\nSe desejamos encontrar a área (ou percentil) associado à posição Z=1,96, tem-se:\n\npnorm(1.96, mean=0, sd=1)\n\n[1] 0.9750021\n\n\n\n\n\n\n\n\nNote\n\n\n\nNote que o valor encontrado 0.975 equivale a uma área de 97,5% abaixo do quantil z=1,96.\n\n\n\nx&lt;-seq(-4, 4, by =.01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nrx&lt;-seq(1.975, 4, by =.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='', ylab='', xaxt=\"n\", main=\"Distribuição Normal - unicaudal superior\")\naxis(1,at=1.975,labels=\"1,975\")\npolygon(rx, ry, col = \"blue\")\nabline(h=0, lty=1)\ntext(3,0.1,\"2,5%\")\ntext(0,0.12,\"95%\", col=\"red\")\narrows(2.5,0.01,2.8,0.08,length = 0.1)\n\n\n\n\n\n\n\n\nNo caso contrário, ou seja, quando se deseja obter uma área superior à um determinado quantil conhecido, adiciona-se o termo “lower.tail=FALSE”."
+  },
+  {
+    "objectID": "eng_data/normalidade.html#ex.9---cauda-superior-com-q-conhecido",
+    "href": "eng_data/normalidade.html#ex.9---cauda-superior-com-q-conhecido",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.9 - Cauda superior com q conhecido",
+    "text": "Ex.9 - Cauda superior com q conhecido\nVejamos o caso de um quantil conhecido q=1.5, onde se deseja conhecer a área (valor-p) acima deste valor:\n\narea&lt;-pnorm(1.5, mean=0, sd=1, lower.tail=FALSE)\narea\n\n[1] 0.0668072\n\nx&lt;-seq(-4, 4, by =.01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nrx&lt;-seq(1.5, 4, by =.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='', ylab='', xaxt=\"n\", main=\"Distribuição Normal -p-valor &gt; q= 1.5\")\naxis(1,at=1.5,labels=\"1,5\")\npolygon(rx, ry, col = \"blue\")\nabline(v=0, h=0, lty=3)\ntext(1.85,0.025,\"6,68%\", col=\"white\")\ntext(0, 0.2, \"93,32%\", col=\"red\")"
+  },
+  {
+    "objectID": "eng_data/normalidade.html#ex.10-área-intermediária-com-quantis-conhecidos",
+    "href": "eng_data/normalidade.html#ex.10-área-intermediária-com-quantis-conhecidos",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.10-Área intermediária com quantis conhecidos",
+    "text": "Ex.10-Área intermediária com quantis conhecidos\nSupondo que fossem conhecidos dois quantis quaisquer, q1=-1,25 e q2=1,75. A área a ser conhecida pode ser calculada através dos seguintes passos:\n1- Determinar a área contida abaixo de q2.\n2- Determinar a área contida abaixo de q1.\n3 - Subtrair as áreas anteriores dos passos (1) - (2)\nAssim:\n\nareaq1&lt;-pnorm(1.75, mean=0, sd=1)\ncat(\"A Área 1 é igual a = \", areaq1)\n\nA Área 1 é igual a =  0.9599408\n\nareaq2&lt;-pnorm(-1.25, mean=0, sd=1)\ncat(\"A Área 2 é igual a = \", areaq2)\n\nA Área 2 é igual a =  0.1056498\n\nareafinal&lt;- areaq1-areaq2\ncat(\"A Área final é igual a = \", areafinal)\n\nA Área final é igual a =  0.8542911\n\n\n\nx&lt;-seq(-3, 3, by = .01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nqnorm(-1.25,0,1) ; qnorm(1.75,0,1)\n\nWarning in qnorm(-1.25, 0, 1): NaNs produzidos\n\n\n[1] NaN\n\n\nWarning in qnorm(1.75, 0, 1): NaNs produzidos\n\n\n[1] NaN\n\nrx&lt;-seq(-1.25, 1.75, by=.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Curva Normal Padrão', ylab='fdp(x)',\n     main = \"Curva Normal Padrão\", col=\"black\")\npolygon(rx, ry, col = 'blue')\nabline(v=0, h=0, lty=3)\ntext(0,0.12,round(areafinal,4), col=\"white\")\nmtext(\"Área nas caudas: 0,1457\", adj = 0.5)"
+  },
+  {
+    "objectID": "eng_data/normalidade.html#aplicação---condutor-metálico",
+    "href": "eng_data/normalidade.html#aplicação---condutor-metálico",
+    "title": "Normalidade dos Dados",
+    "section": "Aplicação - Condutor Metálico",
+    "text": "Aplicação - Condutor Metálico\nConsidere um condutor metálico de cobre submetido a testes de amperagem. Testes anteriores admitem média populacional normal igual a 10mA, com desvio-padrão de 2mA. Calcular: a) a probabilidade de um certo condutor metálico apresentar amperagem superior a 13mA. b) a probabilidade da amperagem estar entre 9 e 11mA. c) a corrente máxima que determina aprovação de 98% dos condutores produzidos.\nResolução:\n\nprimeiramente devemos encontrar o valor Z correspondente ap árâmetro a ser testado (13mA) contra a média populacional de 10mA. Para isso, aplcia-se a expressão de determinação do Z Score: \\[ Z = \\dfrac{\\ \\bar{x} - \\mu}{s} \\] \\[ Z = \\dfrac{\\ 13 - 10}{2} = 1,5 \\] Uma vez conhecido o valor Z, determina-se a área contida na curva normal abaixo de Z=1,5. Assim:\n\n\npnorm(1.5, mean=0, sd=1)\n\n[1] 0.9331928\n\n\nHá portanto 93,32% de probabilidade de se encontrar condutores metálicos co maperagem abaixo de 13mA. Graficamente, temos:\n\nz &lt;- seq(-3,3,0.01)\npd &lt;- dnorm(z)\nplot(z,pd,type=\"l\", ylab=\"probability density\", xlab=\"Z\", main=\"Condutor Metálico\")\npolygon(c(z[z&lt;=1.5],1.5),c(pd[z&lt;=1.5],pd[z==-3]),col=\"red\")\nabline(h=0, lty=1)\ntext(0,0.2,\"93,32%\", col=\"white\")\nmtext(\"Área nas caudas: 0,1457\", adj = 0.5)\n\n\n\n\n\n\n\n\n\nAgora precisamos determinar uma área intermediária, entre 9 e 11mA. Para iso, precisamos definir os dois quartis equivalentes a essa asmperagens.\n\nZ Score (9mA): \\[ \\ Z_9 = \\dfrac{\\ \\bar{x} - \\mu}{s} \\] \\[ Z_9 = \\dfrac{\\ 9 - 10}{2} = -0,5 \\]\nZ Score (11mA): \\[ \\ Z_{11} = \\dfrac{\\ \\bar{x} - \\mu}{s} \\] \\[ Z_{11} = \\dfrac{\\ 11 - 10}{2} = 0,5 \\]\nA área que está sendo procurada é:\n\nareaamp11&lt;-pnorm(0.5, mean=0, sd=1)\ncat(\"A Área abaixo de 11mA é igual a = \", areaamp11)\n\nA Área abaixo de 11mA é igual a =  0.6914625\n\nareaamp9&lt;-pnorm(-0.5, mean=0, sd=1)\ncat(\"A Área abaixo de 9mA  é igual a = \", areaamp9)\n\nA Área abaixo de 9mA  é igual a =  0.3085375\n\nareaampt&lt;- areaamp11-areaamp9\ncat(\"A Área  abaixo de 9mA é igual a = \", areaampt)\n\nA Área  abaixo de 9mA é igual a =  0.3829249\n\n\n\nx&lt;-seq(-3, 3, by = .01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nrx&lt;-seq(-0.5, 0.5, by=.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Z', ylab='fdp(x)',\n     main = \"Curva Normal Padrão\", col=\"black\")\npolygon(rx, ry, col = 'blue')\nabline(v=0, h=0, lty=3)\ntext(0,0.12,round(areaampt,4), col=\"white\")\nmtext(\"Área entre 9 e 11 mA: \",areaampt, adj = 0.4)\n\n\n\n\n\n\n\n\n\nPara se determinar o quantil que produz apenas 2% no máximo de condutores com excesso de amperagem, deve ser determinado o quantil (Z Score) equivalente a este valor de amperagem. Para tanto, devvemos determnar o Z que gera uma área na curva normal de 0.98. Assim:\n\n\nz98&lt;-qnorm(0.98, 0, 1)\nz98\n\n[1] 2.053749\n\n\nPortanto, falta determinar agora a amperagem que equivale ao quantil z= 2,053749.\nZ Score (11mA): \\[ \\ Z_{0.02} = \\dfrac{\\ \\bar{x} - \\mu}{s} \\] \\[ Z_{0.02} = \\dfrac{\\ x - 10}{2} = 2,053749 \\] Assim, determina-se o valor de x = 14.1 mA. Cerca de 2% dos condutores apresentarão amperagem acima de 14,1mA.\n\nx&lt;-seq(-3, 3, by =.01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nrx&lt;-seq(2.053749, 3, by =.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Amperagem (mA)', ylab='Amperagem(mA)', xaxt=\"n\",\n     main = \"Condutor Metálico\", col=\"black\")\naxis(1,at=2.053749,labels=\"14,1mA\")\naxis(1,at=0,labels=\"10mA\")\npolygon(rx, ry, col = \"blue\")\nabline(h=0, v=0, lty=3)\ntext(3,0.1,\"2,0%\")\ntext(0,0.12,\"98%\", col=\"red\")\narrows(2.5,0.01,2.8,0.08,length = 0.1)"
+  },
+  {
+    "objectID": "eng_data/normalidade.html#boxplot",
+    "href": "eng_data/normalidade.html#boxplot",
+    "title": "Normalidade dos Dados",
+    "section": "Boxplot",
+    "text": "Boxplot\nO boxplot é um recurso de visualização de dados muito interessante, dado o resumo de informações úteis que ele traz em uma única imagem gráfica. A figura a seguir demonstra as componentes de um boxplot."
+  },
+  {
+    "objectID": "eng_data/normalidade.html#fonte-verma-abhishek-ranga-virender-2020",
+    "href": "eng_data/normalidade.html#fonte-verma-abhishek-ranga-virender-2020",
+    "title": "Normalidade dos Dados",
+    "section": "",
+    "text": "Fonte: Verma, Abhishek & Ranga, Virender (2020)\nNa caixa central do boxplot, está o IQR (distância interquartílica, definida pelo valor do terceiro quartil na sua parte superior, e pelo primeiro quartil na parte inferior), sendo traçado entre Q1 e Q3 a posição da mediana dos dados. À direita de Q3 é traçado uma linha (Whisker superior) que corresponde a soma de Q3 mais 1,5 vezes a distância interquartílica (IQR = Q3 - Q1). Abaixo é traçado outra linha correspondente a Q1 menos 1,5 vezes o IQR (Whisker inferior).\nOs pontos que ficarem além desses limites, são chamados de outliers, ou pontos extremos, geralmente associados a pontos que estão demonstrando efeito de causas especiais agindo sobre o processo, devendo ser avaliados e, se possível, tratados.\nA forma do boxplot é importante, pois indica possíveis desvios de normalidade dos dados, quando a mediana se desloca para uma das direções de Q1 ou Q3, e as linhas calculadas (Whiskers) aparentam alterações em seus comprimentos relativos. A imagem a seguir mostra esses efeitos:\n\nNo Painel A verifica-se o caso no qual não há assimetrias na curva gaussiana, e maediana está centrada no ponto médio de IQR.\nNo Painel B, verifica-se que a mediana deslocou-se para a direita, em direção à Q3, assim há uma assimetria da curva com concentração de pontos à direita da mediana.\nNo Painel C há uma assimetria com concentração de dados à esquerda da mediana, que se deslocou em direção à Q1.\nComo veremos à frente, à medida que haja assimetrias significativas na gaussiana, a condição de normalidade dos dados pode ser perdida, e portanto testes coplementares devem ser feitos para garantir que as estatísticas paramétricas possam ser executadas e tragam confiabilidade nas análises.\nVamos ver alguns exemplos."
+  },
+  {
+    "objectID": "eng_data/normalidade.html#ex.11---assimetria",
+    "href": "eng_data/normalidade.html#ex.11---assimetria",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.11 - Assimetria",
+    "text": "Ex.11 - Assimetria\nConsidere o tempo médio de processamento de uma peça fundida (segundos) abaixo, determinando os quartis, média, mediana e se há presença de outliers.\nDados:\n\ntempo&lt;-c(44.0, 44.5, 44.5, 44.7, 44.8, 44.9, 44.9, 45.0, 45.0, 45.0, 45.0, 45.4, 45.6, 45.7, 45.8, 46.0, 46.2, 46.3, 47.5)\n\nUma análise estatística fornece os valores pedidos da mediana, média e quartis:\n\nsummary(tempo)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n  44.00   44.85   45.00   45.31   45.75   47.50 \n\nsd(tempo)\n\n[1] 0.813411\n\n\nPara a análise de presença de outliers, gera-se o boxplot:\n\nboxplot(tempo, main=\"Boxplot para Tempo de Solidificação\", ylab=\"Tempo (s)\")\n\n\n\n\n\n\n\n\nO boxplot acusou a presença de um outlier acima do Whisker superior (ponto 47,5, valor máximo dos dados, neste caso). A posição da mediana em direção à Q1 indica maior concentração de dados à esquerda, o que pode ser evidenciado pelo histograma a seguir:\n\nhist(tempo, main=\"Histograma para Tempo de Solidificação\", ylab=\"Tempo (s)\")\n\n\n\n\n\n\n\n\n** Demonstração dos cálculos dos Whiskers de Q1 e Q3:\n\nQ3&lt;-45.75\nQ1&lt;- 44.85\nIQR&lt;- Q3-Q1\nIQR\n\n[1] 0.9\n\nW1&lt;- Q1-1.5*IQR\nW1\n\n[1] 43.5\n\nW2&lt;- Q3+1.5*IQR\nW2\n\n[1] 47.1\n\n\nComo há um único valor dos dados que está acima de W2, ele é marcado como outlier. Abaixo de W1 não há pontos menores, pis o menor valor dos dados é 44 (W1=43.5)."
+  },
+  {
+    "objectID": "eng_data/normalidade.html#stem-and-leaf",
+    "href": "eng_data/normalidade.html#stem-and-leaf",
+    "title": "Normalidade dos Dados",
+    "section": "Stem-and-Leaf",
+    "text": "Stem-and-Leaf\nUma outra forma de visualização dos dados é o diagrama Stem-and-Leaf (Ramo e folhas). pode ser obtido por:\n\nstem(tempo, scale=1.5)\n\n\n  The decimal point is at the |\n\n  44 | 0\n  44 | 557899\n  45 | 00004\n  45 | 678\n  46 | 023\n  46 | \n  47 | \n  47 | 5\n\n\nO valor da escala de 1.5 é para variar de 0,5 entre escalas. A primeira linha (ramo) refere-se aos dados que possuem até 44.0 a 44,5 de valor, a segunda linha entre 44.5 e 45,0, e assim sucessivamente. Os números à direita dos ramos são as folhas (decimais dos números), assim, no primeiro ramao e folha aparece o número zero (44,0). Na segunda linha, para o ramo 44 aparecem os números 557899, referem-se respectivamente aos números 44.5, 44.5, 44.7, 44.8, 44.9 e 44.9. É um aforma de visualizar os dados como se fosse um histograma a partir do eixo y. Note que o último número é o 47.5 e ele apareceu no último ramo e folha 5, que é o outlier anteriormente indentificado no boxplot. Apesar de visualmente pouco atrativo, o Stem-and-Leaf é útil em campo de amostragem, precisando apenas um papel e caneta para criar uma visão da distribuição dos dados e se há tendência a presença de outliers ou assimetrias significativas."
+  },
+  {
+    "objectID": "eng_data/normalidade.html#histograma",
+    "href": "eng_data/normalidade.html#histograma",
+    "title": "Normalidade dos Dados",
+    "section": "Histograma",
+    "text": "Histograma\nSão construídos para dados contínuos através da divisão de amplitude de dados e intervalos agrupados em classes. A seleção do número de classes deve ser razoável para poder demonstrar o agrupamento das observações em grupos suficentes para a visualização da variabilidade dos dados. Em geral, são elaboradas de 5 a 20 classes para uma visualização satisfatória dos dados. pode-se estimar o número de classes como sendo a raiz quadrada do tamanho da amostra.\nVejamos o exemplo a seguir.\n##Ex.12 - Histograma\nDados relativos à espessura de camada de um semi-condutor (em angstrons).\n\nlayer&lt;-c( 438, 450, 487, 451, 452, 441, 444, 461, 432, 471,\n          413, 450, 430, 437, 465, 444, 471, 453, 431, 458, \n          444, 450, 446, 444, 466, 458, 471, 452, 455, 445,\n          468, 459, 450, 453, 473, 454, 458, 438, 447, 463,\n          445, 466, 456, 434, 471, 437, 459, 445, 454, 423,\n          472, 470, 433, 454, 464, 443, 449, 435, 435, 451,\n          474, 457, 455, 448, 478, 465, 462, 454, 425, 440,\n          454, 441, 459, 435, 446, 435, 460, 428, 449, 442,\n          455, 450, 423, 432, 459, 444, 445, 454, 449, 441,\n          449, 445, 455, 441, 464, 457, 437, 434, 452, 439)\n\nPara gerar o histograma, basta dar o comando “hist” para o objeto dos dados criados (layer), definindo o número de classes desejadas (opcional, com breaks= nº de classes). O R automaticamente escolhe um número de classes default. Vejamos com 10 e 12 classes como ficaria:\n\npar(mfrow=c(1,2))\nhist(layer, breaks=10, main=\"Histograma - Layer\", xlab=\"10 Classes\")\nhist(layer, breaks=12, main=\"Histograma - Layer\", xlab=\"12 Classes\")\n\n\n\n\n\n\n\npar(mfrow=c(1,1))\n\nO número definido em “breaks” não necessariamente será igual ao número de colunas do histograma, por isso é acponselhável alterar alguns valores para breaks e verificar a melhor visualização dos dados. Veja que no gráfico para 12 classes, surgiram 14 colunas, sendo as extremas relativas a valores que no histograma de 10 classes estavam agrupadas nas barras extremas e não foram “destacadas” como no segundo histograma.\nÉ possível alterar também as cores e acionar linhas de suavização, como nos exemplos do “help” do RStudio (inclusive para distribuições como a Qui-quadrado, ou customizando o eixo x)."
+  },
+  {
+    "objectID": "eng_data/normalidade.html#qqplot",
+    "href": "eng_data/normalidade.html#qqplot",
+    "title": "Normalidade dos Dados",
+    "section": "QQplot",
+    "text": "QQplot\nUma outra maneira de se avaliar a normalidade dos dados é o uso dos gráficos Quantil-Quantil. Eles possuem graficamente a plotagem dos pontos em um plano cartesiano formado pelos eixos:\n- eixo y: quantis reais (dados amostrais).\n- eixo x: quantis teóricos (baseados na curva normal - gaussiana)\nAo plotar os dados, se os quantis reais forem os mesmo da curva normal, todos os pontos estarão sobre uma reta perfeita, o que seria equivalente à uma curva normal padrão perfeitamente simétrica. Esta reta é formada pela seguinte regra:\n\n\n\n\n\nÀ medida que os pontos se afastam da reta, entende-se que a assimetria dos dados está aumentando, quanto mais afastada em determinadas posições em relação à reta, mais assimétrica é a curva real. Nas caudas da dsitribuição podem aparecer fortes desvios em relação à reta, o que indicaria a presença de outliers. Desvos na região central do gráfico indicam maior concentração à esquerda ou à direita em relação à mediana, como vimos no boxplot. Idealmente, analisa-se tanto o boxplot quanto o QQplot, conjuntamente.\nPara ilustrar melhor o exposto acima, vejamos mais um exemplo."
+  },
+  {
+    "objectID": "eng_data/normalidade.html#ex.13---qqplot",
+    "href": "eng_data/normalidade.html#ex.13---qqplot",
+    "title": "Normalidade dos Dados",
+    "section": "Ex.13 - QQplot",
+    "text": "Ex.13 - QQplot\nConsidere os dados abaixo sobre o teor de ácido úrico no sangue de cavalos sadios (g/ml).\n\nacuric&lt;-c(12.7, 12.7, 12.8, 13.5, 13.6, 13.7, 13.9, 14.1, 14.5, 14.6)\namostra&lt;-seq(1:10)\namostra\n\n [1]  1  2  3  4  5  6  7  8  9 10\n\nf_i&lt;-(amostra-0.5)/20\nf_i\n\n [1] 0.025 0.075 0.125 0.175 0.225 0.275 0.325 0.375 0.425 0.475\n\nquantis&lt;-c(qnorm(f_i, mean=0, sd=1))\nquantis\n\n [1] -1.95996398 -1.43953147 -1.15034938 -0.93458929 -0.75541503 -0.59776013\n [7] -0.45376219 -0.31863936 -0.18911843 -0.06270678\n\nac_urico&lt;-data.frame(acuric, f_i, quantis)\nac_urico\n\n   acuric   f_i     quantis\n1    12.7 0.025 -1.95996398\n2    12.7 0.075 -1.43953147\n3    12.8 0.125 -1.15034938\n4    13.5 0.175 -0.93458929\n5    13.6 0.225 -0.75541503\n6    13.7 0.275 -0.59776013\n7    13.9 0.325 -0.45376219\n8    14.1 0.375 -0.31863936\n9    14.5 0.425 -0.18911843\n10   14.6 0.475 -0.06270678\n\n\nBasta agora associar os quantis reais da coluna “acuric” com a coluna quantis do data frame anterior, em relação à uma reta perfeita (basta associar dois pontos quaisquer em que os quantis reais e teóricos coincidam e termos a reta da normalidade perfeita).\nComo isso é muito trabalhoso para fazer manualmente, utiliza-se o comando “qqnorm” conjuntamente com o comando “qqline” do R, onde é feito todo esse passo a passo automaticamente.\n\nqqnorm(acuric); qqline(acuric)\n\n\n\n\n\n\n\n\nNo gráfico acima nota-se que nas caudas os pontos tendem a se distanciar mais do que no centro do gráfico. Isso indica um certo afastamento da normalidade, por isso, outros testes quantitativos devem ser feitos conjuntamente para sanar as dúvidas “do quanto distante da normalidade” os dados estão ou não. Um desses testes é o de “Shapiro.Wilk”.\nPara visualizar a assimetria presente realiza-se o boxplot e o histograma.\n\npar(mfrow=c(1,2))\nhist(acuric, breaks=10, main=\"Histograma - Ácido Úrico\", xlab=\"g/ml\")\nboxplot(acuric, breaks=12, main=\"Histograma - Ácido Úrico\", ylab=\"g/ml\")\n\n\n\n\n\n\n\npar(mfrow=c(1,1))\n\nNote que com poucos dados disponíveis, o histograma não é uma boa ferramenta de análise da normalidade isoladamente… o boxplot fornece, nesse exemplo, uma visão melhor da assimetria dada a posição da mediana se aproximando de Q3, e os whiskers de comprimento diferentes.\n\n\n\n\n\n\nImportant\n\n\n\nO tamanho da amsotra influencia na qualidade da avaliação de suposição de normalidade. Devem ser evitadas amostras muito pequenas que tornam a avaliação de normalidade, nestas condições, não recomendável. Apesar de não haver um “número mágico” para isso, menos do que 8 não devem ser consideradas. Entre 20 e 30 dados geralmente já facilita o trabalho, mas pode ser necessário até mesmo mais do que isso, o que vai depender dos dados amostrados em cada caso.\n\n\nAlgumas vezes as análises do boxplot e do QQplot podem levar a interpretações conflitantes. vejam:\n\n\n\n\n\nAcima, o boxplot não contribui muito para a análise de assimetria, apesar da mediana estar ligeiramente deslocada para Q1, os whiskers possuem aproximadamente o mesmo comprimento, mas o QQplot acusa forte desvio, ambos acusam outliers. Já na figura abaixo, vemos o contrário, o boxplot acusa assimetria ais forte (dado os comprimentos dos whiskers mais distintos entre si), e o QQplot não demonstra tanta fuga da normalidade. Parte-se, complementarmente, para a análise quantitativa. Vejamos com o teste de Shapio Wilk auxilia."
+  },
+  {
+    "objectID": "eng_data/normalidade.html#teste-de-shapiro.wilk",
+    "href": "eng_data/normalidade.html#teste-de-shapiro.wilk",
+    "title": "Normalidade dos Dados",
+    "section": "Teste de Shapiro.Wilk",
+    "text": "Teste de Shapiro.Wilk\nVamos analisar o exemplo anterior com base no teste de Shapiro.Wilk, sendo realizado no R com o seguinte comando:\n\nshapiro.test(acuric)\n\n\n    Shapiro-Wilk normality test\n\ndata:  acuric\nW = 0.91581, p-value = 0.3233\n\n\nNeste teste, comparamos o p-valor (p-value) com um valor de referência. Por padrão, o R compara com o valor de 0.05 (nível de significãncia do teste, o que significaria um intervalo de confiança de 95%). Por enquanto, antes de apresentar o capítulo do teste de hipóteses, vamos coniserar a seguinte regra, a elucidar posteriormente:\n\nSe p-value &lt; 0.05, há evidências estatísticas para rejeitar a hipótese de normalidade dos dados.\nSe p-value &gt;= 0.05, não há evidências estatísticas para rejeitar a hipótese de normalidade dos dados.\n\nNo caso do ácido úrico, os dados podem ser considerados normais. Vejam, a importância do teste quantitativo, mas que não deve ser tomado isoladamente, pois a análise gráfica auxilia a visualizar quais dados estão afetando a normalidade dos dados.\n\n\n\n\n\n\nWarning\n\n\n\nHá vários outros testes de modelos probabilísticos alternativos ao gaussiano, como o modelo exponencial, modelo de Weilbull, modelo log-normal, etc… e ainda outras alternativas para métodos não-paramétricos, que não necessitam supor um modelo de normalidade da população de onde foram amostrados os dados.\n\n\nPara o teste de hipótse de normalidade, há outros testes estatísticos disponíveis, como os testes de Kolgomorov-Smirnov, e Anderson-Darling, que não serão abordados nesse estudo, dado que o teste de Shapiro-Wilk é robusto para as nossas abordagens."
+  },
+  {
+    "objectID": "eng_data/intervalos.html",
+    "href": "eng_data/intervalos.html",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "A inferência estatística consiste em fornecer aos analistas uma visão ou estimação de parãmetros para a tomada de decisão sobre uma determinada população. Essa estimação pode ser de dois tipos básicos:\n\nEstimativa pontual.\nEstimativa Intervalar.\n\nA estimativa pontual de parâmetros é aquela que nos fornece estatísticas sobre uma determinada variável de interesse de uma população, como média por exemplo, e fornece um valor que não aborda a incerteza de sua estimação. Quando o erro de estimação é considerado, assume-se então uma estimativa intervalar, ou seja:\nEstimativa Intervalar = Estimativa Pontual + Erro de Estimação\nVejamos um exemplo:\n\nVariável de interesse: condutividade tŕmica de um metal (em BTU/hr-ft-ºF).\nAmostragem de algumas resistências forneceram os seguintes valores:\n\n\ncondut&lt;-c(41.60, 41.48, 42.34, 41.95, 41.86,\n          42.18, 41.72, 42.26, 41.81, 42.04)\nmedia_condut&lt;-mean(condut)\ncat(\" A condutividade média do metal é de :\", media_condut, \"BTU/hr-ft-ºF\")\n\n A condutividade média do metal é de : 41.924 BTU/hr-ft-ºF\n\n\nA estimativa do desvio-padrão amostral é:\n\ns_condut&lt;-sd(condut)\ncat(\"O desvio-padrão da condutividade é igual a \", s_condut, \"BTU/hr-ft-ºF\")\n\nO desvio-padrão da condutividade é igual a  0.2841048 BTU/hr-ft-ºF\n\n\nAssim, o erro-padrão amostral estimado é igual a: \\[ Erro-padrão = \\frac{\\sigma}{\\sqrt n} \\]\n\nerro_pad&lt;- s_condut/sqrt(length(condut))\ncat(\"O erro-padrão amostral é igual a \", erro_pad, \"BTU/hr-ft-ºF\")\n\nO erro-padrão amostral é igual a  0.08984184 BTU/hr-ft-ºF\n\n\nÉ importante notar que o erro-padrão é apenas cerca de 0,2% da média de condutividade, podendo ser determinado por:\n\ncat(\"Percentual do erro-padrão = \",100*erro_pad/media_condut, \"%\")\n\nPercentual do erro-padrão =  0.2142969 %\n\n\nPara realizar a estimativa intervalar, é necessário recorrer ao teorema central do limite, pois a média é uma variável aleatória.\n\\[ Z = \\frac{\\bar{x} - \\mu}{erro-padrão} \\] Assim,\n\\[ Z = \\frac{\\bar{x} - \\mu}{\\frac{\\sigma}{\\sqrt n}}\\]\nA curva normal padrão fornece as áreas relativas a uma distribuição com média centrada em seu valor \\(\\mu\\) (média populacional) e desvio-padrão \\(\\sigma\\), tal que, para um intervalo de confiança de 95%, há um nível de significância de 5%, dividido em duas caudas com 2,5% cada uma. Assim, cahmamos a estimativa intervalar de “Intervalo de Confiança - IC”. Assim:\n\nx&lt;-seq(-3, 3, by = .01)\ny&lt;-dnorm(x, mean=0, sd=1, log = FALSE)\nqnorm(0.025,0,1) ; qnorm(0.975,0,1)\n\n[1] -1.959964\n\n\n[1] 1.959964\n\nrx&lt;-seq(-1.96, 1.96, by=.1)\nry&lt;-numeric(2*length(rx))\nry[1:length(rx)]&lt;-dnorm(rx, mean=0, sd=1, log = FALSE)\nrx&lt;-c(rx, rev(rx))\nplot(x, y, 'l', xlab='Curva Normal Padrão', ylab='fdp(x)',\n     main = \"Curva Normal Padrão\", col=\"black\")\npolygon(rx, ry, col = 'blue')\nabline(v=0, h=0, lty=3)\ntext(-2.5,0.1,\"2,5%\")\ntext(2.5,0.1,\"2,5%\")\ntext(0,0.12,\"95%\", col=\"white\")\nmtext(\"Área nas caudas: 5%\", adj = 0.5)\n\n\n\n\n\n\n\n\nOs valores Z que delimitam ambas as caudas podem ser encontrados pelo comando qnorm, tal que:\n\nCauda inferior:\n\n\nqnorm(0.025, mean=0, sd=1)\n\n[1] -1.959964\n\n\n\nCauda superior:\n\n\nqnorm(0.025, mean=0, sd=1, lower.tail = FALSE)\n\n[1] 1.959964\n\n\nA estimativa intervalar ou IC pode ser estimada em duas situações: - o desvio-padrão populacional \\(\\sigma\\) é conhecido. - o desvio-padrão populacional \\(\\sigma\\) é desconhecido.\nQuando \\(\\sigma\\) é conhecido, utiliza-se a distribuição normal Z para calcular o IC, tal que:\n\\[ IC^{95} = \\bar{x} \\pm Z_ \\frac{\\alpha}{2}.\\frac{\\sigma}{\\sqrt n}  \\]\nNo caso em que \\(\\sigma\\) é desconhecido, utiliza-se a distribuição t de student, tal que o IC é calculado por:\n\\[ IC^{95} = \\bar{x} \\pm t_ {(n-1);\\alpha/2}.\\frac{s}{\\sqrt n}\\] onde s é o desvio-padrão amostral e t(n-1);\\(\\alpha\\)/2 é o valor da distribuição de t de student para (n-1) graus de liberdade.\nAnalogamente ao que foi determinado para o valor de Z anteriormente, determinamos o valor de t de student da seguinte forma:\n\nt&lt;-qt(0.025, df=9, lower.tail = FALSE)\nt\n\n[1] 2.262157\n\n\nNo exemplo da condutividade metálica anterior, temos uma amostra de tamanho 10 (n=10) e portanto, utiliza-se a distribuição t para realizar o cálculo do IC (95%). Assim:\n\nn&lt;- length(condut)\nIC_inferior&lt;- mean(condut)-(t*erro_pad)\nIC_superior&lt;- mean(condut)+(t*erro_pad)\nIC_condut&lt;-c(IC_inferior, IC_superior)\nIC_condut\n\n[1] 41.72076 42.12724\n\n\nPortanto, a condutividade média do condutor metálico (com estimativa pontual de 41,924 BTU/hr-ft-ºF) está presente no IC de [41.72076; 42.12724] para um IC de 95%.\n\n\n\n\n\n\nNote\n\n\n\nQuando o tamanho da amostra “n” for maior do que 30 (amostras grandes), pode ser utilizado a distribuição normal em lugar da distribuição t. Em amostras com n igual ou menor que 30, recomenda-se a utilização da distribuição t de student, de forma a ter uma análise mais conservadora.\n\n\n\n\nPara evitar fazer as fórmulas de cálculo, podemo sutilizar alternativamente um comando rápido, o “t.test”, que roda o teste t de student conforme calculamos acima. Para a estimativa pontual, basta digitar:\n\nt.test(condut)$estimate   #Estimativa pontual\n\nmean of x \n   41.924 \n\n\nPara a estimativa intervalar, basta digitar:\n\nt.test(condut,conf.level=0.95)$conf.int  #Intervalo de Confiança\n\n[1] 41.72076 42.12724\nattr(,\"conf.level\")\n[1] 0.95\n\n\n\n\n\n\nboxplot(condut)\n\n\n\n\n\n\n\n\n\nqqnorm(condut); qqline(condut)\n\n\n\n\n\n\n\n\n\n\n\nTeste de Shapiro-Wilk\nH0: os dados vieram de uma distribuição que segue o modelo Normal\nHA: os dados não vieram de uma distribuição que segue o modelo Normal\n\nshapiro.test(condut)\n\n\n    Shapiro-Wilk normality test\n\ndata:  condut\nW = 0.97355, p-value = 0.9216\n\n\nCom base nos testes acima, não há evidências contra a suposição de normalidade dos dados, não rejeitando-se a Ho (valor-p igual a 0.9216&gt; nível de significância 0.05).\nExemplo 01\nOs dados a seguir são relativos à força (em libras) necessária para se extrair um conector usado em fabricação de motores. Pede-se:\nDados:\n\nf_extract&lt;-c(79.3, 75.1, 78.2, 74.1, 73.9, 75.0, 77.6, 77.3, 73.8, \n             74.6, 75.5, 74.0, 74.7, 75.9, 72.9, 73.8, 74.2, 78.1,\n             75.4, 76.3, 75.3, 76.2, 74.9, 78.0, 75.1, 76.8)\n\n\nDetermine a estimativa pontual da força de extração do conector.\n\n\nf_media&lt;-mean(f_extract)\ncat(\"A força de extração média do conector é de\",f_media, \"libras\")\n\nA força de extração média do conector é de 75.61538 libras\n\n\n\nDetermine o valor da força que separa os 50% maiores esforços dos outros 50% menores.\n\nO valor que separa 50% dos dados é a mediana. Assim:\n\nmediana&lt;-median(f_extract)\ncat(\" O valor que separa 50% dos dados à esquerda e à direita é:\", mediana, \"libras\")\n\n O valor que separa 50% dos dados à esquerda e à direita é: 75.2 libras\n\n\n\nDetermine as estimativas pontuais do desvio-padrão e variância dos dados de força de extração do conector.\n\n\nDesvio-padrão:\n\n\ndp_f&lt;-sd(f_extract)\ncat(\"O desvio-padrão da força de extração do conector é de\", dp_f, \"libras\")\n\nO desvio-padrão da força de extração do conector é de 1.654737 libras\n\n\n\nVariância:\n\n\nvariancia&lt;-var(f_extract)\ncat(\"A variância da força de extração do conector é de\", variancia, \"libras\")\n\nA variância da força de extração do conector é de 2.738154 libras\n\n\n\nDetermine a estimativa pontual do erro-padrão da força de extração do conector.\n\n\nErro-padrão:\n\n\nerro_pad&lt;- sd(f_extract)/sqrt(length(f_extract))\ncat(\"O erro-padrão amostral é igual a \", erro_pad, \"Libras\")\n\nO erro-padrão amostral é igual a  0.3245206 Libras\n\n\n\nDetermine uma estimativa pontual da proporção de conectores que limita a força em 73 libras.\n\nPara isso deve ser determinado o valor da estimativa do teste t, que fornecerá o valor para o qual se associa 73 libras na distribuição t.\nO teste t, define-se por:\n\\[ T = \\frac{\\bar{x} - \\mu}{\\frac{s}{\\sqrt n}}\\]\nAssim,\n\\[ T = \\frac{73 - 75,61}{\\frac{1,65}{\\sqrt 26}}= -2,61\\] Assim, o valor da proporção de conectores que não superam 73 libras de força é de:\n\np73&lt;-pt(-2.61, df=25)\ncat(\"Cerca de\", 100*p73, \"% dos conectores terão força de extração menor que 73 libras.\")\n\nCerca de 0.7538574 % dos conectores terão força de extração menor que 73 libras.\n\n\n\n# Determinar o quantil para uma área igual a 5% na curva normal, unicaudal inferior.\nq&lt;-qnorm(0.007539, mean = 0, sd = 1)\nz &lt;- seq(-3,3,0.01)\npd &lt;- dnorm(z)\nplot(z,pd,type=\"l\", main=\"Força de Extração &lt; 73 Libras\")\npolygon(c(z[z&lt;=q],q),c(pd[z&lt;=q],pd[z==-3]),col=\"red\")\nabline(v=60, h=0, lty=2)\ntext(-2.7,0.05,\"0,75%\")\nmtext(\"z=-2,61\")\n\n\n\n\n\n\n\n\nExemplo 02\nPara o exercício 01, faça uma estimativa intervalar da força de extração do conector, considerando um IC de 95%, das seguintes formas:\n\nAplique a fórmula de determinação do IC requerido.\n\n\nEncontrando o tamanho da amostra:\n\n\nn_ex02&lt;-length(f_extract)\ncat(\"O tamanho da amostra é de\", n_ex02, \"unidades.\")\n\nO tamanho da amostra é de 26 unidades.\n\n\n\nDeterminando o erro-padrão:\n\n\nerro_pad_ex02&lt;- sd(f_extract)/sqrt(n_ex02)\ncat(\"O erro-padrão amostral é igual a \", erro_pad_ex02, \"Libras\")\n\nO erro-padrão amostral é igual a  0.3245206 Libras\n\n\n\nDeterminando o IC(95%):\n\n\nt2&lt;-qt(0.025, df=(n_ex02-1), lower.tail = FALSE)\nt2\n\n[1] 2.059539\n\nIC_inferior&lt;- mean(f_extract)-(t2*erro_pad_ex02)\nIC_superior&lt;- mean(f_extract)+(t2*erro_pad_ex02)\nIC_condut&lt;-c(IC_inferior, IC_superior)\nIC_condut\n\n[1] 74.94702 76.28375\n\n\n\nUtilize o comando t.test para conferir suas contas.\n\n\nt.test(f_extract)\n\n\n    One Sample t-test\n\ndata:  f_extract\nt = 233.01, df = 25, p-value &lt; 2.2e-16\nalternative hypothesis: true mean is not equal to 0\n95 percent confidence interval:\n 74.94702 76.28375\nsample estimates:\nmean of x \n 75.61538 \n\n\n\nUtilize agora um IC de 90%. Explique o que ocorreu com o IC determinado comparado ao anterior (letra b).\n\n\nt.test(f_extract, conf.level=0.90)\n\n\n    One Sample t-test\n\ndata:  f_extract\nt = 233.01, df = 25, p-value &lt; 2.2e-16\nalternative hypothesis: true mean is not equal to 0\n90 percent confidence interval:\n 75.06106 76.16971\nsample estimates:\nmean of x \n 75.61538 \n\n\nA amplitude do IC(90%) é de (76.17-75.06 = 1.11), enquanto a amplitude do IC (95%) é de (76.28 - 74.95 = 1,33), uma variação de (1,33 - 1,11 = 0,22) a menor.\n\nt&lt;-qt(0.025, df=9, lower.tail = FALSE)\nt\n\n[1] 2.262157\n\ndf2&lt;-n_ex02-1\ndf2\n\n[1] 25\n\nt2&lt;-qt(0.05, df=25, lower.tail = FALSE)\nt2\n\n[1] 1.708141\n\n\nLembrando que:\n\\[ IC^{95} = \\bar{x} \\pm t_ {(n-1);\\alpha/2}.\\frac{s}{\\sqrt n}\\]\nPor isso ocorre que o valor de IC(90%) é mais “rigoroso” (mais estreita) para o IC de 90%, pois o valor de t do teste é menor (1,71 contra 2,26). Isso significa que quando se deseja maior “confiança” no teste, obviamente a faixa de possíveis vaores para a estatística deve aumentar (maior a amplitude para um determinado valor da estimativa cair na faixa considerada!).\n\nDetermine o erro de estimativa para os IC’s de 90% e 95%.\n\nO Erro de estimativa \\(\\epsilon\\) é dado por:\n\\[ \\epsilon = t_ {(n-1);\\alpha/2}.\\frac{s}{\\sqrt n}\\] Assim, os erros de cada IC podem ser determinados:\n\nIC 95%:\n\n\nt95&lt;-qt(0.025, df=25, lower.tail=FALSE)\nerro95&lt;-t95*sd(f_extract)/sqrt(length(f_extract))\ncat(\"O erro de estimativa para IC de 95% é de\", erro95)\n\nO erro de estimativa para IC de 95% é de 0.6683627\n\n\n\nIC 90%:\n\n\nt90&lt;-qt(0.05, df=25, lower.tail=FALSE)\nerro90&lt;-t90*sd(f_extract)/sqrt(length(f_extract))\ncat(\"O erro de estimativa para IC de 95% é de\", erro90)\n\nO erro de estimativa para IC de 95% é de 0.5543268\n\n\n\n\n\n\n\n\nNote\n\n\n\nNote que o erro de estimativa é a metade da amplitude da faixa de variação do IC em cada caso.\n\n\n\n\n\nPodemos interpretar o valor do IC que temos uma “confiança de x%” de que esse intervalo em especial contenha o valor desconhecido da média populacional \\(\\mu\\). Na imagem abaixo, para m=100 amostras de tamanho (n=3) cada uma, em 5 amostras m não foi encontrado o valor médio da população (\\(\\mu\\)=200), destacados em pontos vermelhos. Esse seria o IC de 95%:\n\n\n\n\n\nSe tomarmos IC de 90%, teríamos 10 amostras que não conteriam o valor real da média populacional, ou seja, à medida que diminui o IC maior o número de vezes em que a amostra não contrá o valor esperado da média populacional.\n\n\n\nSegundo o Teorema Central do Limite para proporções, define-se que:\n\\[ Z = \\frac{\\bar{p} - p}{{\\sqrt {(p(1-p) / n)}}}\\] o IC para proporções pode assim ser definido como:\n\\[ IC = \\hat{p} \\pm Z_ \\frac{\\alpha}{2}.\\sqrt {\\hat{p}(1-\\hat{p}) / n)}  \\]\nA proporção \\(\\hat{p}\\) é determinada pela relação a quantidade de interesse e o tamanho da amostra.\nExemplo 03\nUma amostra de 85 rolamentos de virabrequim gerou a informação de que 10 deles estavam com excesso de rugosidade superficial. qual seria o intervalo de confiança de 95% para essa produção de rolamentos?\n\nDeterminação da proporção de defeituosos:\n\n\\(\\hat{p}\\)= 10/85 = 0,12 ou 12% com excesso de rugosidade.\nAssim,\n\\[ IC^{95} = \\hat{p} \\pm Z_ \\frac{\\alpha}{2}.\\sqrt {\\hat{p}(1-\\hat{p}) / n)}  \\] Sabendo que o valor da estatística \\(Z \\frac{\\alpha}{2}\\) para IC de 95% é igual a:\n\nz95&lt;-qnorm(0.025, mean=0, sd=1, lower.tail=FALSE)\nz95\n\n[1] 1.959964\n\n\ntemos:\n\\[ IC^{95} = 0.12 \\pm 1.959964.\\sqrt {0.12(1-0.12) / 85)} \\] O IC resultante fornece o intervalo de [0.05; 0.19] % de proporção de peças com rugosidades em excesso.\nExemplo 04\nDetermine para o exercício 03 anterior:\n\no desvio-padrão para a proporção de peças analisadas.\n\nPode ser encontrado por: \\[ DP = \\sqrt{\\hat{p}(1-\\hat{p})/n}\\]\nAssim, o DP é de:\n\\[ DP = \\sqrt{0.12(1-0.12) / 85)} = 0.035 \\]\n\no Erro de estimativa.\n\nO erro de estimativa \\(\\epsilon\\) é de:\n\\[\\epsilon= Z_{\\frac{\\alpha}{2}}.DP\\] \\[\\epsilon= 1.959964*0.035 = 0,069\\] Usando o script do R:\n\nDP&lt;-0.035\nerro3&lt;- qnorm(0.025, mean=0, sd=1, lower.tail=FALSE)*DP\ncat(\"O erro de estimação para a proporção é de\", erro3)\n\nO erro de estimação para a proporção é de 0.06859874\n\n\n\n\n\nAo explicitarmos o valor de n na equação do erro de estimativa, obtemos:\n\\[ n = (Z_{{\\frac{\\alpha}{2}}/{E}})^2 . \\hat{p}(1-\\hat{p})\\]\nSe fosse desejado obter um erro de estimativa máximo de 5% para o exemplo 03, o tamanho da amostra mínima n para esse erro seria de:\n\\[ n = (1.96/0.05)^2 . 0.12(1-0.12)= 162,3 \\] Seriam necessárias 163 amostras para detectar um erro máximo de 5%, ou erro de 0.05. O iC para este caso seria de :\n\nLimite Inferior: 0.12 - 0.05 = 0.07\nLimite superior: 0.12 + 0.05 = 0.17\n\n\n\n\nDe uma maneira geral, o tamanho de amostra para médias de uma população que segue a distribuição normal pode ser determinada por:\n\\[ n = (Z_{\\frac{\\alpha}{2}}.{\\sigma}/E)^2\\] Exemplo 05\nConsidere um teste Charpy para determinar a capacidade de absorção de energia de impacto de um produto metálico testado em laboratório. Os resultados dos testes de impacto de 10 amostras estão fornecidos abaixo. Determinar:\nDados:\n\ncharpy&lt;-c( 64.1, 64.7, 64.5, 64.6, 64.5, 64.3, 64.6, 64.8, 64.2, 64.3)\n\n\no iC de 95% para o teste de impacto, considerando a distribuição t.\n\nSabendo que:\n\\[ IC^{95} = \\bar{x} \\pm t_ {(n-1);\\alpha/2}.\\frac{s}{\\sqrt n}\\]\n\nmedia&lt;-mean(charpy)\nmedia\n\n[1] 64.46\n\ncat(\"A média de energia absorvida no impacto é de\", media, \"Joules\")\n\nA média de energia absorvida no impacto é de 64.46 Joules\n\nt95&lt;-qt(0.025, df=9, lower.tail=FALSE)\nt95\n\n[1] 2.262157\n\ns_charpy&lt;- sd(charpy)\ns_charpy\n\n[1] 0.2270585\n\nn&lt;-length(charpy)\nn\n\n[1] 10\n\nIC95&lt;- c(media-t95*s_charpy/sqrt(n), media+t95*s_charpy/sqrt(n))\nIC95\n\n[1] 64.29757 64.62243\n\n\n\nRepita a letra a considerando agora o desvio-padrão igual a 1 (populacional).\n\n\\[ IC^{95} = \\bar{x} \\pm Z_ \\frac{\\alpha}{2}.\\frac{\\sigma}{\\sqrt n}  \\] Assim, sabendo que :\n\nz95&lt;-qnorm(0.025, mean=0,sd=1, lower.tail=FALSE)\nz95\n\n[1] 1.959964\n\n\n\\[ IC^{95} = 64,46 \\pm 1,96.\\frac{1}{\\sqrt{10}}  \\]\nO IC para 95% de confiança é: [63,84; 65,08]. Note que as diferenças acima foram produzidas pelo uso de diferentes valores do coeficiente Z ou t na fórmula, bem como pelo desvio-padrão considerado. Para amostras grandes, o valor de t se aproxima ao de Z e assim, resta apenas a atenção para com o valor do desvio-padrão a ser utilizado (populacional ou amostral).\n\n\n\n\n\n\nImportant\n\n\n\nFique atento aos dados que possui para realizar os cálculos do IC. Se há o conhecimento prévio do desvio-padrão populacional, ou tenha uma amostra com n&gt;30, o teste Z é indicado. Caso contrário, onde se tenha apenas uma estimativa pontual do desvio-padrão (amostral), e n&lt;30, use o teste T para determinar o IC.\n\n\nO comprimento do intervalo de confiança (amplitude) é uma medida da precisão da estimação. Deseja-se obter, em geral, um intervalo de confiança de menor amplitude possível e que permita a tomada de decisão com adequada confiança na estatística produzida. Isso pode ser feito pela escolha de uma amostra com tamanho “n” grande o suficiente para gerar a precisão necessária.\n\n\n\n\n\n\nWarning\n\n\n\nÉ sempre importante se atentar para a normalidade dos dados. As estatísticas até aqui apresentadas partem do principio que os dados seguem uma distribuição normal, co testes chamados paramétricos. Caso não sejam cpnsiderados normais, outros testes (não-paramétricos) deverão ser utilizados.\n\n\n\n\n\nEm algumas situações a variabilidade é o maior interesse de controle, não necessariametne sempre será o valor médio ou estimativa pontual de algum parâmetro de medida central. A variância (ou o desvio-padrão, por consequência) pode ser o alvo de ação de controle e otimização.\nSe uma amostra aleatória de tamanho n possui distribuição normal ($; ²), pode-se afirmar que a variável aleatória possui uma distribuição Qui-quadrado, tal que:\n\\[ \\chi² = \\frac{(n-1)s²}{\\sigma²}\\] Cponsiderando um caso aleatório em que haja, por exemplo, 5 graus de liberdade (n=6), temos a seguinte curva característica da distribuição:\n\nx &lt;- rchisq(50000, df = 5)\n  \nhist(x, \n     freq = FALSE, \n     xlim = c(0,16), \n     ylim = c(0,0.2))\ncurve(dchisq(x, df = 5), from = 0, to = 15, \n      n = 5000, col= 'red', lwd=2, add = T, main= \"Distribuição Qui-Quadrado\")\n\n\n\n\n\n\n\n\nIgualmente temos na curva de distribuição Qui-quadrado duas caldas a analisar, com significância igual a \\(\\frac{\\alpha}{2}\\) em cada uma delas.\nO IC para a variância será dado por:\n\\[ IC(\\sigma²)= [\\frac{(n-1)s²}{\\chi²_{(n-1);{\\alpha/2}}};\\frac{(n-1)s²}{\\chi²_{(n-1);{1}-\\frac{\\alpha}{2}}}  ]\\]\nVamos analisar um desses casos.\nExemplo 06\nUma máquina de envase é utilizada para encher garrafas com detergente líquido. Se a variância do volume de enchimento exceder 0,30ml² existirá uma proporção de garrafas que poderá ter enchimento incompleto ou em excesso. Assim, uma amostra de 20 garrafas foi obtida da linha de envase e obteve-se o valor para a variância igual a 0,45 ml². Sabendo que os dados seguem uma distribuição normal, avaliar para um IC de 95%:\n\\[ IC(\\sigma²)= [\\frac{(20-1)(0.45)}{\\chi²_{(20-1);0.025}};\\frac{(20-1)(0.45)}{\\chi²_{(20-1);{0.975}}}  ]\\]\nPara determinar os valores de \\(\\chi²\\) usamos os seguintes comandos no R:\n\nPara a calda inferior:\n\n\nqchisq(0.975, df=19, lower.tail=FALSE)\n\n[1] 8.906516\n\n\n\nPara a cauda superior:\n\n\nqchisq(0.025, df=19, lower.tail=FALSE)\n\n[1] 32.85233\n\n\nAssim o IC para a variância, fica:\n\\[IC(\\sigma²)= [\\frac{(20-1)(0.45)}{32.85233};\\frac{(20-1)(0.45)}{8.906516}]\\] \\[IC(\\sigma²)= [0,26; 0,96]\\] A variância do volume das garrafas de detergente desta linha de produção está entre 0,26 ml² e 0,96 ml², com 95% de confiança. Conclui-se que haverá problemas de enchimento nesse perfil de ajuste d eprodução do envase de detergentes, pois a variância 0,30ml² está presente no intervalo de confiança, ou seja, haverá variabilidade superior a este padrão."
+  },
+  {
+    "objectID": "eng_data/intervalos.html#comando-t.test-para-ics",
+    "href": "eng_data/intervalos.html#comando-t.test-para-ics",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "Para evitar fazer as fórmulas de cálculo, podemo sutilizar alternativamente um comando rápido, o “t.test”, que roda o teste t de student conforme calculamos acima. Para a estimativa pontual, basta digitar:\n\nt.test(condut)$estimate   #Estimativa pontual\n\nmean of x \n   41.924 \n\n\nPara a estimativa intervalar, basta digitar:\n\nt.test(condut,conf.level=0.95)$conf.int  #Intervalo de Confiança\n\n[1] 41.72076 42.12724\nattr(,\"conf.level\")\n[1] 0.95"
+  },
+  {
+    "objectID": "eng_data/intervalos.html#analise-da-suposição-de-normalidade",
+    "href": "eng_data/intervalos.html#analise-da-suposição-de-normalidade",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "boxplot(condut)\n\n\n\n\n\n\n\n\n\nqqnorm(condut); qqline(condut)"
+  },
+  {
+    "objectID": "eng_data/intervalos.html#testes-de-shapiro-wilk",
+    "href": "eng_data/intervalos.html#testes-de-shapiro-wilk",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "Teste de Shapiro-Wilk\nH0: os dados vieram de uma distribuição que segue o modelo Normal\nHA: os dados não vieram de uma distribuição que segue o modelo Normal\n\nshapiro.test(condut)\n\n\n    Shapiro-Wilk normality test\n\ndata:  condut\nW = 0.97355, p-value = 0.9216\n\n\nCom base nos testes acima, não há evidências contra a suposição de normalidade dos dados, não rejeitando-se a Ho (valor-p igual a 0.9216&gt; nível de significância 0.05).\nExemplo 01\nOs dados a seguir são relativos à força (em libras) necessária para se extrair um conector usado em fabricação de motores. Pede-se:\nDados:\n\nf_extract&lt;-c(79.3, 75.1, 78.2, 74.1, 73.9, 75.0, 77.6, 77.3, 73.8, \n             74.6, 75.5, 74.0, 74.7, 75.9, 72.9, 73.8, 74.2, 78.1,\n             75.4, 76.3, 75.3, 76.2, 74.9, 78.0, 75.1, 76.8)\n\n\nDetermine a estimativa pontual da força de extração do conector.\n\n\nf_media&lt;-mean(f_extract)\ncat(\"A força de extração média do conector é de\",f_media, \"libras\")\n\nA força de extração média do conector é de 75.61538 libras\n\n\n\nDetermine o valor da força que separa os 50% maiores esforços dos outros 50% menores.\n\nO valor que separa 50% dos dados é a mediana. Assim:\n\nmediana&lt;-median(f_extract)\ncat(\" O valor que separa 50% dos dados à esquerda e à direita é:\", mediana, \"libras\")\n\n O valor que separa 50% dos dados à esquerda e à direita é: 75.2 libras\n\n\n\nDetermine as estimativas pontuais do desvio-padrão e variância dos dados de força de extração do conector.\n\n\nDesvio-padrão:\n\n\ndp_f&lt;-sd(f_extract)\ncat(\"O desvio-padrão da força de extração do conector é de\", dp_f, \"libras\")\n\nO desvio-padrão da força de extração do conector é de 1.654737 libras\n\n\n\nVariância:\n\n\nvariancia&lt;-var(f_extract)\ncat(\"A variância da força de extração do conector é de\", variancia, \"libras\")\n\nA variância da força de extração do conector é de 2.738154 libras\n\n\n\nDetermine a estimativa pontual do erro-padrão da força de extração do conector.\n\n\nErro-padrão:\n\n\nerro_pad&lt;- sd(f_extract)/sqrt(length(f_extract))\ncat(\"O erro-padrão amostral é igual a \", erro_pad, \"Libras\")\n\nO erro-padrão amostral é igual a  0.3245206 Libras\n\n\n\nDetermine uma estimativa pontual da proporção de conectores que limita a força em 73 libras.\n\nPara isso deve ser determinado o valor da estimativa do teste t, que fornecerá o valor para o qual se associa 73 libras na distribuição t.\nO teste t, define-se por:\n\\[ T = \\frac{\\bar{x} - \\mu}{\\frac{s}{\\sqrt n}}\\]\nAssim,\n\\[ T = \\frac{73 - 75,61}{\\frac{1,65}{\\sqrt 26}}= -2,61\\] Assim, o valor da proporção de conectores que não superam 73 libras de força é de:\n\np73&lt;-pt(-2.61, df=25)\ncat(\"Cerca de\", 100*p73, \"% dos conectores terão força de extração menor que 73 libras.\")\n\nCerca de 0.7538574 % dos conectores terão força de extração menor que 73 libras.\n\n\n\n# Determinar o quantil para uma área igual a 5% na curva normal, unicaudal inferior.\nq&lt;-qnorm(0.007539, mean = 0, sd = 1)\nz &lt;- seq(-3,3,0.01)\npd &lt;- dnorm(z)\nplot(z,pd,type=\"l\", main=\"Força de Extração &lt; 73 Libras\")\npolygon(c(z[z&lt;=q],q),c(pd[z&lt;=q],pd[z==-3]),col=\"red\")\nabline(v=60, h=0, lty=2)\ntext(-2.7,0.05,\"0,75%\")\nmtext(\"z=-2,61\")\n\n\n\n\n\n\n\n\nExemplo 02\nPara o exercício 01, faça uma estimativa intervalar da força de extração do conector, considerando um IC de 95%, das seguintes formas:\n\nAplique a fórmula de determinação do IC requerido.\n\n\nEncontrando o tamanho da amostra:\n\n\nn_ex02&lt;-length(f_extract)\ncat(\"O tamanho da amostra é de\", n_ex02, \"unidades.\")\n\nO tamanho da amostra é de 26 unidades.\n\n\n\nDeterminando o erro-padrão:\n\n\nerro_pad_ex02&lt;- sd(f_extract)/sqrt(n_ex02)\ncat(\"O erro-padrão amostral é igual a \", erro_pad_ex02, \"Libras\")\n\nO erro-padrão amostral é igual a  0.3245206 Libras\n\n\n\nDeterminando o IC(95%):\n\n\nt2&lt;-qt(0.025, df=(n_ex02-1), lower.tail = FALSE)\nt2\n\n[1] 2.059539\n\nIC_inferior&lt;- mean(f_extract)-(t2*erro_pad_ex02)\nIC_superior&lt;- mean(f_extract)+(t2*erro_pad_ex02)\nIC_condut&lt;-c(IC_inferior, IC_superior)\nIC_condut\n\n[1] 74.94702 76.28375\n\n\n\nUtilize o comando t.test para conferir suas contas.\n\n\nt.test(f_extract)\n\n\n    One Sample t-test\n\ndata:  f_extract\nt = 233.01, df = 25, p-value &lt; 2.2e-16\nalternative hypothesis: true mean is not equal to 0\n95 percent confidence interval:\n 74.94702 76.28375\nsample estimates:\nmean of x \n 75.61538 \n\n\n\nUtilize agora um IC de 90%. Explique o que ocorreu com o IC determinado comparado ao anterior (letra b).\n\n\nt.test(f_extract, conf.level=0.90)\n\n\n    One Sample t-test\n\ndata:  f_extract\nt = 233.01, df = 25, p-value &lt; 2.2e-16\nalternative hypothesis: true mean is not equal to 0\n90 percent confidence interval:\n 75.06106 76.16971\nsample estimates:\nmean of x \n 75.61538 \n\n\nA amplitude do IC(90%) é de (76.17-75.06 = 1.11), enquanto a amplitude do IC (95%) é de (76.28 - 74.95 = 1,33), uma variação de (1,33 - 1,11 = 0,22) a menor.\n\nt&lt;-qt(0.025, df=9, lower.tail = FALSE)\nt\n\n[1] 2.262157\n\ndf2&lt;-n_ex02-1\ndf2\n\n[1] 25\n\nt2&lt;-qt(0.05, df=25, lower.tail = FALSE)\nt2\n\n[1] 1.708141\n\n\nLembrando que:\n\\[ IC^{95} = \\bar{x} \\pm t_ {(n-1);\\alpha/2}.\\frac{s}{\\sqrt n}\\]\nPor isso ocorre que o valor de IC(90%) é mais “rigoroso” (mais estreita) para o IC de 90%, pois o valor de t do teste é menor (1,71 contra 2,26). Isso significa que quando se deseja maior “confiança” no teste, obviamente a faixa de possíveis vaores para a estatística deve aumentar (maior a amplitude para um determinado valor da estimativa cair na faixa considerada!).\n\nDetermine o erro de estimativa para os IC’s de 90% e 95%.\n\nO Erro de estimativa \\(\\epsilon\\) é dado por:\n\\[ \\epsilon = t_ {(n-1);\\alpha/2}.\\frac{s}{\\sqrt n}\\] Assim, os erros de cada IC podem ser determinados:\n\nIC 95%:\n\n\nt95&lt;-qt(0.025, df=25, lower.tail=FALSE)\nerro95&lt;-t95*sd(f_extract)/sqrt(length(f_extract))\ncat(\"O erro de estimativa para IC de 95% é de\", erro95)\n\nO erro de estimativa para IC de 95% é de 0.6683627\n\n\n\nIC 90%:\n\n\nt90&lt;-qt(0.05, df=25, lower.tail=FALSE)\nerro90&lt;-t90*sd(f_extract)/sqrt(length(f_extract))\ncat(\"O erro de estimativa para IC de 95% é de\", erro90)\n\nO erro de estimativa para IC de 95% é de 0.5543268\n\n\n\n\n\n\n\n\nNote\n\n\n\nNote que o erro de estimativa é a metade da amplitude da faixa de variação do IC em cada caso."
+  },
+  {
+    "objectID": "eng_data/intervalos.html#interpretação-do-ic",
+    "href": "eng_data/intervalos.html#interpretação-do-ic",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "Podemos interpretar o valor do IC que temos uma “confiança de x%” de que esse intervalo em especial contenha o valor desconhecido da média populacional \\(\\mu\\). Na imagem abaixo, para m=100 amostras de tamanho (n=3) cada uma, em 5 amostras m não foi encontrado o valor médio da população (\\(\\mu\\)=200), destacados em pontos vermelhos. Esse seria o IC de 95%:\n\n\n\n\n\nSe tomarmos IC de 90%, teríamos 10 amostras que não conteriam o valor real da média populacional, ou seja, à medida que diminui o IC maior o número de vezes em que a amostra não contrá o valor esperado da média populacional."
+  },
+  {
+    "objectID": "eng_data/intervalos.html#intervalo-de-confiança-para-proporções",
+    "href": "eng_data/intervalos.html#intervalo-de-confiança-para-proporções",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "Segundo o Teorema Central do Limite para proporções, define-se que:\n\\[ Z = \\frac{\\bar{p} - p}{{\\sqrt {(p(1-p) / n)}}}\\] o IC para proporções pode assim ser definido como:\n\\[ IC = \\hat{p} \\pm Z_ \\frac{\\alpha}{2}.\\sqrt {\\hat{p}(1-\\hat{p}) / n)}  \\]\nA proporção \\(\\hat{p}\\) é determinada pela relação a quantidade de interesse e o tamanho da amostra.\nExemplo 03\nUma amostra de 85 rolamentos de virabrequim gerou a informação de que 10 deles estavam com excesso de rugosidade superficial. qual seria o intervalo de confiança de 95% para essa produção de rolamentos?\n\nDeterminação da proporção de defeituosos:\n\n\\(\\hat{p}\\)= 10/85 = 0,12 ou 12% com excesso de rugosidade.\nAssim,\n\\[ IC^{95} = \\hat{p} \\pm Z_ \\frac{\\alpha}{2}.\\sqrt {\\hat{p}(1-\\hat{p}) / n)}  \\] Sabendo que o valor da estatística \\(Z \\frac{\\alpha}{2}\\) para IC de 95% é igual a:\n\nz95&lt;-qnorm(0.025, mean=0, sd=1, lower.tail=FALSE)\nz95\n\n[1] 1.959964\n\n\ntemos:\n\\[ IC^{95} = 0.12 \\pm 1.959964.\\sqrt {0.12(1-0.12) / 85)} \\] O IC resultante fornece o intervalo de [0.05; 0.19] % de proporção de peças com rugosidades em excesso.\nExemplo 04\nDetermine para o exercício 03 anterior:\n\no desvio-padrão para a proporção de peças analisadas.\n\nPode ser encontrado por: \\[ DP = \\sqrt{\\hat{p}(1-\\hat{p})/n}\\]\nAssim, o DP é de:\n\\[ DP = \\sqrt{0.12(1-0.12) / 85)} = 0.035 \\]\n\no Erro de estimativa.\n\nO erro de estimativa \\(\\epsilon\\) é de:\n\\[\\epsilon= Z_{\\frac{\\alpha}{2}}.DP\\] \\[\\epsilon= 1.959964*0.035 = 0,069\\] Usando o script do R:\n\nDP&lt;-0.035\nerro3&lt;- qnorm(0.025, mean=0, sd=1, lower.tail=FALSE)*DP\ncat(\"O erro de estimação para a proporção é de\", erro3)\n\nO erro de estimação para a proporção é de 0.06859874"
+  },
+  {
+    "objectID": "eng_data/intervalos.html#tamanho-da-amostra-para-proporções",
+    "href": "eng_data/intervalos.html#tamanho-da-amostra-para-proporções",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "Ao explicitarmos o valor de n na equação do erro de estimativa, obtemos:\n\\[ n = (Z_{{\\frac{\\alpha}{2}}/{E}})^2 . \\hat{p}(1-\\hat{p})\\]\nSe fosse desejado obter um erro de estimativa máximo de 5% para o exemplo 03, o tamanho da amostra mínima n para esse erro seria de:\n\\[ n = (1.96/0.05)^2 . 0.12(1-0.12)= 162,3 \\] Seriam necessárias 163 amostras para detectar um erro máximo de 5%, ou erro de 0.05. O iC para este caso seria de :\n\nLimite Inferior: 0.12 - 0.05 = 0.07\nLimite superior: 0.12 + 0.05 = 0.17"
+  },
+  {
+    "objectID": "eng_data/intervalos.html#tamanho-de-amostra-para-dados-normais",
+    "href": "eng_data/intervalos.html#tamanho-de-amostra-para-dados-normais",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "De uma maneira geral, o tamanho de amostra para médias de uma população que segue a distribuição normal pode ser determinada por:\n\\[ n = (Z_{\\frac{\\alpha}{2}}.{\\sigma}/E)^2\\] Exemplo 05\nConsidere um teste Charpy para determinar a capacidade de absorção de energia de impacto de um produto metálico testado em laboratório. Os resultados dos testes de impacto de 10 amostras estão fornecidos abaixo. Determinar:\nDados:\n\ncharpy&lt;-c( 64.1, 64.7, 64.5, 64.6, 64.5, 64.3, 64.6, 64.8, 64.2, 64.3)\n\n\no iC de 95% para o teste de impacto, considerando a distribuição t.\n\nSabendo que:\n\\[ IC^{95} = \\bar{x} \\pm t_ {(n-1);\\alpha/2}.\\frac{s}{\\sqrt n}\\]\n\nmedia&lt;-mean(charpy)\nmedia\n\n[1] 64.46\n\ncat(\"A média de energia absorvida no impacto é de\", media, \"Joules\")\n\nA média de energia absorvida no impacto é de 64.46 Joules\n\nt95&lt;-qt(0.025, df=9, lower.tail=FALSE)\nt95\n\n[1] 2.262157\n\ns_charpy&lt;- sd(charpy)\ns_charpy\n\n[1] 0.2270585\n\nn&lt;-length(charpy)\nn\n\n[1] 10\n\nIC95&lt;- c(media-t95*s_charpy/sqrt(n), media+t95*s_charpy/sqrt(n))\nIC95\n\n[1] 64.29757 64.62243\n\n\n\nRepita a letra a considerando agora o desvio-padrão igual a 1 (populacional).\n\n\\[ IC^{95} = \\bar{x} \\pm Z_ \\frac{\\alpha}{2}.\\frac{\\sigma}{\\sqrt n}  \\] Assim, sabendo que :\n\nz95&lt;-qnorm(0.025, mean=0,sd=1, lower.tail=FALSE)\nz95\n\n[1] 1.959964\n\n\n\\[ IC^{95} = 64,46 \\pm 1,96.\\frac{1}{\\sqrt{10}}  \\]\nO IC para 95% de confiança é: [63,84; 65,08]. Note que as diferenças acima foram produzidas pelo uso de diferentes valores do coeficiente Z ou t na fórmula, bem como pelo desvio-padrão considerado. Para amostras grandes, o valor de t se aproxima ao de Z e assim, resta apenas a atenção para com o valor do desvio-padrão a ser utilizado (populacional ou amostral).\n\n\n\n\n\n\nImportant\n\n\n\nFique atento aos dados que possui para realizar os cálculos do IC. Se há o conhecimento prévio do desvio-padrão populacional, ou tenha uma amostra com n&gt;30, o teste Z é indicado. Caso contrário, onde se tenha apenas uma estimativa pontual do desvio-padrão (amostral), e n&lt;30, use o teste T para determinar o IC.\n\n\nO comprimento do intervalo de confiança (amplitude) é uma medida da precisão da estimação. Deseja-se obter, em geral, um intervalo de confiança de menor amplitude possível e que permita a tomada de decisão com adequada confiança na estatística produzida. Isso pode ser feito pela escolha de uma amostra com tamanho “n” grande o suficiente para gerar a precisão necessária.\n\n\n\n\n\n\nWarning\n\n\n\nÉ sempre importante se atentar para a normalidade dos dados. As estatísticas até aqui apresentadas partem do principio que os dados seguem uma distribuição normal, co testes chamados paramétricos. Caso não sejam cpnsiderados normais, outros testes (não-paramétricos) deverão ser utilizados."
+  },
+  {
+    "objectID": "eng_data/intervalos.html#intervalo-de-confiança-para-variância",
+    "href": "eng_data/intervalos.html#intervalo-de-confiança-para-variância",
+    "title": "Estimação de Parâmetros",
+    "section": "",
+    "text": "Em algumas situações a variabilidade é o maior interesse de controle, não necessariametne sempre será o valor médio ou estimativa pontual de algum parâmetro de medida central. A variância (ou o desvio-padrão, por consequência) pode ser o alvo de ação de controle e otimização.\nSe uma amostra aleatória de tamanho n possui distribuição normal ($; ²), pode-se afirmar que a variável aleatória possui uma distribuição Qui-quadrado, tal que:\n\\[ \\chi² = \\frac{(n-1)s²}{\\sigma²}\\] Cponsiderando um caso aleatório em que haja, por exemplo, 5 graus de liberdade (n=6), temos a seguinte curva característica da distribuição:\n\nx &lt;- rchisq(50000, df = 5)\n  \nhist(x, \n     freq = FALSE, \n     xlim = c(0,16), \n     ylim = c(0,0.2))\ncurve(dchisq(x, df = 5), from = 0, to = 15, \n      n = 5000, col= 'red', lwd=2, add = T, main= \"Distribuição Qui-Quadrado\")\n\n\n\n\n\n\n\n\nIgualmente temos na curva de distribuição Qui-quadrado duas caldas a analisar, com significância igual a \\(\\frac{\\alpha}{2}\\) em cada uma delas.\nO IC para a variância será dado por:\n\\[ IC(\\sigma²)= [\\frac{(n-1)s²}{\\chi²_{(n-1);{\\alpha/2}}};\\frac{(n-1)s²}{\\chi²_{(n-1);{1}-\\frac{\\alpha}{2}}}  ]\\]\nVamos analisar um desses casos.\nExemplo 06\nUma máquina de envase é utilizada para encher garrafas com detergente líquido. Se a variância do volume de enchimento exceder 0,30ml² existirá uma proporção de garrafas que poderá ter enchimento incompleto ou em excesso. Assim, uma amostra de 20 garrafas foi obtida da linha de envase e obteve-se o valor para a variância igual a 0,45 ml². Sabendo que os dados seguem uma distribuição normal, avaliar para um IC de 95%:\n\\[ IC(\\sigma²)= [\\frac{(20-1)(0.45)}{\\chi²_{(20-1);0.025}};\\frac{(20-1)(0.45)}{\\chi²_{(20-1);{0.975}}}  ]\\]\nPara determinar os valores de \\(\\chi²\\) usamos os seguintes comandos no R:\n\nPara a calda inferior:\n\n\nqchisq(0.975, df=19, lower.tail=FALSE)\n\n[1] 8.906516\n\n\n\nPara a cauda superior:\n\n\nqchisq(0.025, df=19, lower.tail=FALSE)\n\n[1] 32.85233\n\n\nAssim o IC para a variância, fica:\n\\[IC(\\sigma²)= [\\frac{(20-1)(0.45)}{32.85233};\\frac{(20-1)(0.45)}{8.906516}]\\] \\[IC(\\sigma²)= [0,26; 0,96]\\] A variância do volume das garrafas de detergente desta linha de produção está entre 0,26 ml² e 0,96 ml², com 95% de confiança. Conclui-se que haverá problemas de enchimento nesse perfil de ajuste d eprodução do envase de detergentes, pois a variância 0,30ml² está presente no intervalo de confiança, ou seja, haverá variabilidade superior a este padrão."
+  },
+  {
+    "objectID": "eng_data/exerc_prop_gqt.html",
+    "href": "eng_data/exerc_prop_gqt.html",
+    "title": "exerc_prop",
+    "section": "",
+    "text": "Back to top"
+  },
+  {
+    "objectID": "eng_data/dist_prob.html",
+    "href": "eng_data/dist_prob.html",
+    "title": "dist_prob",
+    "section": "",
+    "text": "Back to top"
+  },
+  {
+    "objectID": "eng_data/autor.html",
+    "href": "eng_data/autor.html",
+    "title": "Autor",
+    "section": "",
+    "text": "Currículo Lattes:http://lattes.cnpq.br/7014168702313216\nLinkedIn: www.linkedin.com/in/eric-bartulici\nSite: http://ebart.academy\n\n\n\nEngenheiro Metalúrgico formado pela Escola de Minas de Ouro Preto / UFOP em 1997, com Mestrado em Metalurgia Física pela Escola de Engenharia da UFMG concluído em 2004.\nPossui Pós-Graduação em:\n\nGestão Empresarial pela Fundação Getúlio Vargas (2001);\nMBA Executivo pelo INSPER/SP (2009); Módulos Internacionais - Duke (USA) e INSEAD (França).\nPós Graduação em Estatística pela UFMG (2024).\n\nAtualmente é professor no IFMG - Instituto Federal de Ciência e Tecnologia de Minas Gerais, no campus Ouro Branco-MG, atuando nas áreas de Engenharia Metalúrgica (Graduação e Cursos Técnicos Integrado e Subsequente), bem como no curso de Graduação de Administração.\n\n\n\n\n\nGerdau (São Paulo-SP):\n\nProjeto Template: Consultor Técnico líder para a implementação do SAP - Warehouse Module - na América do Sul (Argentina, Chile e Uruguai). Apoio no processo de implantação para USA.\n\nGerdau (Ouro Branco-MG):\n\nConsultor Técnico de S&OP- Sales and Operation Planning - usina Ouro Branco.\nGerente de Logística Interna: Armazenagem, Ferrovias e Faturamento.\nChefe de Área de Acabamento: acabamento e inspeção de placas, blocos e tarugos da Área de Laminação.\n\nFundição Tupy (Joinville-SC):\n\nEngenheiro de Processos de Produção - Especialista Seis Sigma - Black Belt\nLíder de produção: Tratamentos Térmicos de Peças\nLíder de Produção: Moldagem e Acabamento de Conexões.\n\nIBGE (Conselheiro Lafaiete - MG):\n\nTécnico Censitário (Censo Demográfico de 1991)\n\n\n\n\n\n\n\n\nEstatística Aplicada para Engenharia.\nQualidade Seis Sigma (Black Belt).\nProcessos de Produção.\n\n\n\n\n\nFundição.\nTratamentos Térmicos.\nPesquisa Operacional Metalúrgica.\n\n\n\n\n\nPesquisa Operacional em Processos.\nExcelência Operacional."
+  },
+  {
+    "objectID": "eng_data/autor.html#formação-e-experiência-profissional",
+    "href": "eng_data/autor.html#formação-e-experiência-profissional",
+    "title": "Autor",
+    "section": "",
+    "text": "Engenheiro Metalúrgico formado pela Escola de Minas de Ouro Preto / UFOP em 1997, com Mestrado em Metalurgia Física pela Escola de Engenharia da UFMG concluído em 2004.\nPossui Pós-Graduação em:\n\nGestão Empresarial pela Fundação Getúlio Vargas (2001);\nMBA Executivo pelo INSPER/SP (2009); Módulos Internacionais - Duke (USA) e INSEAD (França).\nPós Graduação em Estatística pela UFMG (2024).\n\nAtualmente é professor no IFMG - Instituto Federal de Ciência e Tecnologia de Minas Gerais, no campus Ouro Branco-MG, atuando nas áreas de Engenharia Metalúrgica (Graduação e Cursos Técnicos Integrado e Subsequente), bem como no curso de Graduação de Administração."
+  },
+  {
+    "objectID": "eng_data/autor.html#empresas-que-atuou",
+    "href": "eng_data/autor.html#empresas-que-atuou",
+    "title": "Autor",
+    "section": "",
+    "text": "Gerdau (São Paulo-SP):\n\nProjeto Template: Consultor Técnico líder para a implementação do SAP - Warehouse Module - na América do Sul (Argentina, Chile e Uruguai). Apoio no processo de implantação para USA.\n\nGerdau (Ouro Branco-MG):\n\nConsultor Técnico de S&OP- Sales and Operation Planning - usina Ouro Branco.\nGerente de Logística Interna: Armazenagem, Ferrovias e Faturamento.\nChefe de Área de Acabamento: acabamento e inspeção de placas, blocos e tarugos da Área de Laminação.\n\nFundição Tupy (Joinville-SC):\n\nEngenheiro de Processos de Produção - Especialista Seis Sigma - Black Belt\nLíder de produção: Tratamentos Térmicos de Peças\nLíder de Produção: Moldagem e Acabamento de Conexões.\n\nIBGE (Conselheiro Lafaiete - MG):\n\nTécnico Censitário (Censo Demográfico de 1991)"
+  },
+  {
+    "objectID": "eng_data/autor.html#áreas-de-atuação",
+    "href": "eng_data/autor.html#áreas-de-atuação",
+    "title": "Autor",
+    "section": "",
+    "text": "Estatística Aplicada para Engenharia.\nQualidade Seis Sigma (Black Belt).\nProcessos de Produção.\n\n\n\n\n\nFundição.\nTratamentos Térmicos.\nPesquisa Operacional Metalúrgica.\n\n\n\n\n\nPesquisa Operacional em Processos.\nExcelência Operacional."
+  },
+  {
+    "objectID": "eng_data/about.html",
+    "href": "eng_data/about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "contato.html#dados-de-contato",
+    "href": "contato.html#dados-de-contato",
+    "title": "Contato",
+    "section": "Dados de contato:",
+    "text": "Dados de contato:\nemail: ebart.academy@outlook.com.br"
+  },
+  {
+    "objectID": "contato.html#endereço-profissional",
+    "href": "contato.html#endereço-profissional",
+    "title": "Contato",
+    "section": "Endereço profissional:",
+    "text": "Endereço profissional:\nInstituto Federal de Ciência e Tecnologia de Minas Gerais - IFMG\nCampus Ouro Branco"
+  },
+  {
+    "objectID": "contato.html#endereço",
+    "href": "contato.html#endereço",
+    "title": "Contato",
+    "section": "Endereço:",
+    "text": "Endereço:\nRua Afonso Sardinha, 90\nBairro Minas Talco\nCEP: 36494-018 (CEP antigo 36420-000)"
+  },
+  {
+    "objectID": "analises_graf.html",
+    "href": "analises_graf.html",
+    "title": "Análises Gráficas",
+    "section": "",
+    "text": "Back to top",
+    "crumbs": [
+      "Autor",
+      "Distribuição de Dados e Amostras",
+      "Análises Gráficas"
+    ]
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "autor.html",
+    "href": "autor.html",
+    "title": "Autor",
+    "section": "",
+    "text": "Currículo Lattes:http://lattes.cnpq.br/7014168702313216\nLinkedIn: www.linkedin.com/in/eric-bartulici\nSite: http://ebart.academy\n\n\n\nEngenheiro Metalúrgico formado pela Escola de Minas de Ouro Preto / UFOP em 1997, com Mestrado em Metalurgia Física pela Escola de Engenharia da UFMG concluído em 2004.\nPossui Pós-Graduação em:\n\nGestão Empresarial pela Fundação Getúlio Vargas (2001);\nMBA Executivo pelo INSPER/SP (2009); Módulos Internacionais - Duke (USA) e INSEAD (França).\nPós Graduação em Estatística pela UFMG (2024).\n\nAtualmente é professor no IFMG - Instituto Federal de Ciência e Tecnologia de Minas Gerais, no campus Ouro Branco-MG, atuando nas áreas de Engenharia Metalúrgica (Graduação e Cursos Técnicos Integrado e Subsequente), bem como no curso de Graduação de Administração.\n\n\n\n\n\nGerdau (São Paulo-SP):\n\nProjeto Template: Consultor Técnico líder para a implementação do SAP - Warehouse Module - na América do Sul (Argentina, Chile e Uruguai). Apoio no processo de implantação para USA.\n\nGerdau (Ouro Branco-MG):\n\nConsultor Técnico de S&OP- Sales and Operation Planning - usina Ouro Branco.\nGerente de Logística Interna: Armazenagem, Ferrovias e Faturamento.\nChefe de Área de Acabamento: acabamento e inspeção de placas, blocos e tarugos da Área de Laminação.\n\nFundição Tupy (Joinville-SC):\n\nEngenheiro de Processos de Produção - Especialista Seis Sigma - Black Belt\nLíder de produção: Tratamentos Térmicos de Peças\nLíder de Produção: Moldagem e Acabamento de Conexões.\n\nIBGE (Conselheiro Lafaiete - MG):\n\nTécnico Censitário (Censo Demográfico de 1991)\n\n\n\n\n\n\n\n\nEstatística Aplicada para Engenharia.\nQualidade Seis Sigma (Black Belt).\nProcessos de Produção.\n\n\n\n\n\nFundição.\nTratamentos Térmicos.\nPesquisa Operacional Metalúrgica.\n\n\n\n\n\nPesquisa Operacional em Processos.\nExcelência Operacional."
+  },
+  {
+    "objectID": "autor.html#formação-e-experiência-profissional",
+    "href": "autor.html#formação-e-experiência-profissional",
+    "title": "Autor",
+    "section": "",
+    "text": "Engenheiro Metalúrgico formado pela Escola de Minas de Ouro Preto / UFOP em 1997, com Mestrado em Metalurgia Física pela Escola de Engenharia da UFMG concluído em 2004.\nPossui Pós-Graduação em:\n\nGestão Empresarial pela Fundação Getúlio Vargas (2001);\nMBA Executivo pelo INSPER/SP (2009); Módulos Internacionais - Duke (USA) e INSEAD (França).\nPós Graduação em Estatística pela UFMG (2024).\n\nAtualmente é professor no IFMG - Instituto Federal de Ciência e Tecnologia de Minas Gerais, no campus Ouro Branco-MG, atuando nas áreas de Engenharia Metalúrgica (Graduação e Cursos Técnicos Integrado e Subsequente), bem como no curso de Graduação de Administração."
+  },
+  {
+    "objectID": "autor.html#empresas-que-atuou",
+    "href": "autor.html#empresas-que-atuou",
+    "title": "Autor",
+    "section": "",
+    "text": "Gerdau (São Paulo-SP):\n\nProjeto Template: Consultor Técnico líder para a implementação do SAP - Warehouse Module - na América do Sul (Argentina, Chile e Uruguai). Apoio no processo de implantação para USA.\n\nGerdau (Ouro Branco-MG):\n\nConsultor Técnico de S&OP- Sales and Operation Planning - usina Ouro Branco.\nGerente de Logística Interna: Armazenagem, Ferrovias e Faturamento.\nChefe de Área de Acabamento: acabamento e inspeção de placas, blocos e tarugos da Área de Laminação.\n\nFundição Tupy (Joinville-SC):\n\nEngenheiro de Processos de Produção - Especialista Seis Sigma - Black Belt\nLíder de produção: Tratamentos Térmicos de Peças\nLíder de Produção: Moldagem e Acabamento de Conexões.\n\nIBGE (Conselheiro Lafaiete - MG):\n\nTécnico Censitário (Censo Demográfico de 1991)"
+  },
+  {
+    "objectID": "autor.html#áreas-de-atuação",
+    "href": "autor.html#áreas-de-atuação",
+    "title": "Autor",
+    "section": "",
+    "text": "Estatística Aplicada para Engenharia.\nQualidade Seis Sigma (Black Belt).\nProcessos de Produção.\n\n\n\n\n\nFundição.\nTratamentos Térmicos.\nPesquisa Operacional Metalúrgica.\n\n\n\n\n\nPesquisa Operacional em Processos.\nExcelência Operacional."
+  },
+  {
+    "objectID": "dist_prob.html",
+    "href": "dist_prob.html",
+    "title": "dist_prob",
+    "section": "",
+    "text": "Back to top",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Distribuição de Probabilidades"
+    ]
+  },
+  {
+    "objectID": "eng_data/analises_graf.html",
+    "href": "eng_data/analises_graf.html",
+    "title": "Análises Gráficas",
+    "section": "",
+    "text": "Back to top"
+  },
+  {
+    "objectID": "eng_data/contato.html#dados-de-contato",
+    "href": "eng_data/contato.html#dados-de-contato",
+    "title": "Contato",
+    "section": "Dados de contato:",
+    "text": "Dados de contato:\nemail: eric.bartulici@ifmg.edu.br"
+  },
+  {
+    "objectID": "eng_data/contato.html#endereço-profissional",
+    "href": "eng_data/contato.html#endereço-profissional",
+    "title": "Contato",
+    "section": "Endereço profissional:",
+    "text": "Endereço profissional:\nInstituto Federal de Ciência e Tecnologia de Minas Gerais - IFMG\nCampus Ouro Branco"
+  },
+  {
+    "objectID": "eng_data/contato.html#endereço",
+    "href": "eng_data/contato.html#endereço",
+    "title": "Contato",
+    "section": "Endereço:",
+    "text": "Endereço:\nRua Afonso Sardinha, 90\nBairro Minas Talco\nCEP: 36494-018 (CEP antigo 36420-000)"
+  },
+  {
+    "objectID": "eng_data/estat_descritiva.html",
+    "href": "eng_data/estat_descritiva.html",
+    "title": "Estatística Descritiva",
+    "section": "",
+    "text": "Em construção\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "eng_data/index.html",
+    "href": "eng_data/index.html",
+    "title": "Análise de Dados em Engenharia",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n Back to top"
+  },
+  {
+    "objectID": "eng_data/ling_R.html",
+    "href": "eng_data/ling_R.html",
+    "title": "Linguagem R",
+    "section": "",
+    "text": "Back to top"
+  },
+  {
+    "objectID": "eng_data/tabelas_estat.html",
+    "href": "eng_data/tabelas_estat.html",
+    "title": "tabelas_estat",
+    "section": "",
+    "text": "Back to top"
+  },
+  {
+    "objectID": "eng_data/testes_np.html",
+    "href": "eng_data/testes_np.html",
+    "title": "testes_np",
+    "section": "",
+    "text": "Back to top"
+  },
+  {
+    "objectID": "estat_descritiva.html",
+    "href": "estat_descritiva.html",
+    "title": "Estatística Descritiva",
+    "section": "",
+    "text": "Em construção\n\n\n\n Back to top",
+    "crumbs": [
+      "Autor",
+      "Distribuição de Dados e Amostras",
+      "Estatística Descritiva"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Análise de Dados em Engenharia",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n Back to top",
+    "crumbs": [
+      "Autor",
+      "Home"
+    ]
+  },
+  {
+    "objectID": "ling_R.html",
+    "href": "ling_R.html",
+    "title": "Linguagem R",
+    "section": "",
+    "text": "Back to top",
+    "crumbs": [
+      "Autor",
+      "Análise Exploratória de Dados",
+      "Introdução à linguagem R"
+    ]
+  },
+  {
+    "objectID": "tabelas_estat.html",
+    "href": "tabelas_estat.html",
+    "title": "tabelas_estat",
+    "section": "",
+    "text": "Back to top",
+    "crumbs": [
+      "Autor",
+      "Anexos",
+      "Tabelas Estatísticas"
+    ]
+  },
+  {
+    "objectID": "testes_np.html",
+    "href": "testes_np.html",
+    "title": "testes_np",
+    "section": "",
+    "text": "Back to top",
+    "crumbs": [
+      "Autor",
+      "Experimentos e Testes Estatísticos",
+      "Exercícios Propostos"
+    ]
+  }
+]
